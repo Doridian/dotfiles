@@ -1,5 +1,14 @@
 #!/usr/bin/env fish
 
+if ! test -d .git;
+    mkdir -p ~/Programming
+    cd ~/Programming
+    git clone https://github.com/Doridian/dotfiles
+    cd dotfiles
+    ./install.fish
+    exit 0
+end
+
 function symlink_file -a src dst
     set dst_dir "$(realpath "$(dirname "$dst")")"
 
