@@ -2,17 +2,17 @@ set fconfd_loader_debug 0
 
 set fconfd_root_dir "$(dirname "$(realpath "$(status --current-filename)")")/fish.conf.d"
 
-alias is_fconfd_loader_debug='test $fconfd_loader_debug -eq 1'
+alias fconfd_is_loader_debug='test $fconfd_loader_debug -eq 1'
 
 function fconfd_source_file -a file
-	if is_fconfd_loader_debug;
+	if fconfd_is_loader_debug;
 		echo "Loading file $file"
 	end
 	source "$file"
 end
 
 function fconfd_source_dir -a dir
-	if is_fconfd_loader_debug;
+	if fconfd_is_loader_debug;
 		echo "Loading dir $fconfd_root_dir/$dir"
 	end
 	for file in "$fconfd_root_dir/$dir"/*.fish
@@ -21,7 +21,7 @@ function fconfd_source_dir -a dir
 end
 
 function fconfd_source_config_root -a dir
-	if is_fconfd_loader_debug;
+	if fconfd_is_loader_debug;
 		echo "Loading root $fconfd_root_dir/$dir"
 	end
 
