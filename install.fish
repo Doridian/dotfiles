@@ -1,10 +1,14 @@
 #!/usr/bin/env fish
 
 if ! test -d .git;
+    echo 'Not ran from git repo, assuming first time setup'
     mkdir -p ~/Programming
     cd ~/Programming
-    git clone https://github.com/Doridian/dotfiles
+    if ! test -d dotfiles;
+        git clone https://github.com/Doridian/dotfiles
+    end
     cd dotfiles
+    git pull
     ./install.fish
     exit 0
 end
