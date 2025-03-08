@@ -1,5 +1,11 @@
 #!/usr/bin/env fish
 
+set -l _cur_filename "$(status --current-filename)"
+if test "$_cur_filename" != '-';
+    cd "$(dirname "$_cur_filename")"
+end
+set -e _cur_filename
+
 if ! test -d .git;
     echo 'Not ran from git repo, assuming first time setup'
     mkdir -p ~/Programming
