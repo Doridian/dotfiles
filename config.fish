@@ -35,10 +35,11 @@ function _fconfd_source_config_root -a dir
     end
 end
 
+set -x fish_function_path "$_fconfd_root_dir/functions" $fish_function_path
+
 function fconfd_reload
     _fconfd_source_config_root always
     if status is-interactive
-
         _fconfd_source_config_root interactive
     else
         _fconfd_source_config_root non-interactive
