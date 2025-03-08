@@ -1,42 +1,41 @@
-set loader_debug 1
+set fconfd_loader_debug 0
 
-set dotfiles_dir "$(dirname "$(realpath "$(status --current-filename)")")"
-set fish_conf_d "$dotfiles_dir/fish.conf.d"
+set fconfd_root_dir "$(dirname "$(realpath "$(status --current-filename)")")/fish.conf.d"
 
-alias is_loader_debug='test $loader_debug -eq 1'
+alias is_fconfd_loader_debug='test $fconfd_loader_debug -eq 1'
 
-function source_file -a file
-	if is_loader_debug;
+function fconfd_source_file -a file
+	if is_fconfd_loader_debug;
 		echo "Loading file $file"
 	end
 	source "$file"
 end
 
-function source_dir -a dir
-	if is_loader_debug;
-		echo "Loading dir $fish_conf_d/$dir"
+function fconfd_source_dir -a dir
+	if is_fconfd_loader_debug;
+		echo "Loading dir $fconfd_root_dir/$dir"
 	end
-	for file in "$fish_conf_d/$dir"/*.fish
-		source_file "$file"
+	for file in "$fconfd_root_dir/$dir"/*.fish
+		fconfd_source_file "$file"
 	end
 end
 
-function source_config_root -a dir
-	if is_loader_debug;
-		echo "Loading root $fish_conf_d/$dir"
+function fconfd_source_config_root -a dir
+	if is_fconfd_loader_debug;
+		echo "Loading root $fconfd_root_dir/$dir"
 	end
 
-	source_dir "$dir"
+	fconfd_source_dir "$dir"
 	if test -z "$SSH_CLIENT";
-		source_dir "$dir/local"
+		fconfd_source_dir "$dir/local"
 	else
-		source_dir "$dir/remote"
+		fconfd_source_dir "$dir/remote"
 	end
 end
 
-source_config_root always
+fconfd_source_config_root always
 if status is-interactive;
-	source_config_root interactive
+	fconfd_source_config_root interactive
 else
-	source_config_root non-interactive
+	fconfd_source_config_root non-interactive
 end
