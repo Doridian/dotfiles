@@ -11,11 +11,11 @@ end
 cd dotfiles
 git pull
 ./update.fish
-echo "Done!"'
+exit 0'
 
 set -l remote $argv[1]
 if ! test -z "$remote"
-    echo "$_install_script" | ssh -tt "$remote" -- /usr/bin/env fish
+    echo "$_install_script" | ssh "$remote" -- /usr/bin/env fish
     exit 0
 end
 
