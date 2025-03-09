@@ -4,7 +4,7 @@ function gonorm
     set_screen_backlight 40
     set_kb_backlight 100
 
-    if ! /opt/endpoint/is-on-battery.sh
+    if ! is_on_battery
         powerprofilesctl set balanced
     end
 end
