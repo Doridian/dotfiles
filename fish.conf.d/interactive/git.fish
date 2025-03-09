@@ -1,4 +1,5 @@
 alias gp='git push'
+alias gd='git diff'
 alias gpl='git pull'
 alias gco='git checkout'
 alias grb='git rebase'
