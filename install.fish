@@ -24,7 +24,7 @@ if ! test -d .git
     exit 0
 end
 
-function symlink_file -a src dst
+function _fconfd_symlink_file -a src dst
     set -l dst_dir "$(realpath "$(dirname "$dst")")"
 
     set -l src "$(realpath "$src")"
@@ -35,6 +35,6 @@ function symlink_file -a src dst
     ln -sf "$src_rel" "$dst"
 end
 
-symlink_file gitconfig ~/.gitconfig
-symlink_file ssh.config ~/.ssh/config
-symlink_file config.fish ~/.config/fish/config.fish
+_fconfd_symlink_file gitconfig ~/.gitconfig
+_fconfd_symlink_file ssh.config ~/.ssh/config
+_fconfd_symlink_file config.fish ~/.config/fish/config.fish
