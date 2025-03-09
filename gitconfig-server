@@ -1,0 +1,14 @@
+# This is Git's per-user configuration file.
+[user]
+	name = Doridian
+	email = git@doridian.net
+[init]
+	defaultBranch = main
+[sendemail]
+	suppresscc = self
+[pull]
+	rebase = true
+[push]
+	autoSetupRemote = yes
+[gpg]
+	format = ssh
