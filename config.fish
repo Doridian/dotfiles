@@ -35,12 +35,12 @@ function _fconfd_source_config_root -a dir
     end
 end
 
-set -l _fconfd_functions_dir "$_fconfd_root_dir/functions"
-if not contains $_fconfd_functions_dir $fish_function_path
-    set -x fish_function_path $fish_function_path[1] $_fconfd_functions_dir $fish_function_path[2..]
-end
-
 function fconfd_reload
+    set -l _fconfd_functions_dir "$_fconfd_root_dir/functions"
+    if not contains $_fconfd_functions_dir $fish_function_path
+        set -x fish_function_path $fish_function_path[1] $_fconfd_functions_dir $fish_function_path[2..]
+    end
+
     _fconfd_source_config_root always
     if status is-interactive
         _fconfd_source_config_root interactive
