@@ -1,17 +1,14 @@
 #!/usr/bin/env fish
 
-set -l _stage2 $argv[1]
+cd "$(dirname "$(status --current-filename)")"
 
-set -l _cur_filename "$(status --current-filename)"
-cd "$(dirname "$_cur_filename")"
-set -e _cur_filename
-
-if test "$_stage2" != gitpulldone
+if test "$argv[1]" != gitpulldone
     git pull
     ./update.fish gitpulldone
     exit 0
 end
-# TRY NOT TO EDIT ABOVE THIS LINE, IT MAKES AUTOUPDATES HARDER!
+
+# TRY NOT TO EDIT ABOVE THIS LINE, IT MAKES AUTO UPDATES HARDER!
 
 function _fconfd_symlink_file -a src dst
     set -l dst_dir "$(realpath "$(dirname "$dst")")"
