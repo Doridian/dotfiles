@@ -1,5 +1,7 @@
 #!/usr/bin/env fish
 
+# curl -fsL https://raw.githubusercontent.com/Doridian/dotfiles/refs/heads/main/install.fish | fish
+
 set -l _cur_filename "$(status --current-filename)"
 if test "$_cur_filename" != -
 
