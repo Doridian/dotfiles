@@ -25,4 +25,7 @@ The structure of this directory (all folders are optional!) is as follows (`./` 
 ./local
 # Loaded in all remote (SSH) shell sessions
 ./remote
+
+# Functions dir for fish, second highest pref, only below ~/.config/fish/functions
+./functions
 ```
