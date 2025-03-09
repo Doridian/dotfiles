@@ -1,16 +1,19 @@
 #!/usr/bin/env fish
 
 set -l _cur_filename "$(status --current-filename)"
-if test "$_cur_filename" != '-';
+if test "$_cur_filename" != -
+
     cd "$(dirname "$_cur_filename")"
 end
 set -e _cur_filename
 
-if ! test -d .git;
+if ! test -d .git
+
     echo 'Not ran from git repo, assuming first time setup'
     mkdir -p ~/Programming
     cd ~/Programming
-    if ! test -d dotfiles;
+    if ! test -d dotfiles
+
         git clone https://github.com/Doridian/dotfiles
     end
     cd dotfiles
@@ -20,10 +23,10 @@ if ! test -d .git;
 end
 
 function symlink_file -a src dst
-    set dst_dir "$(realpath "$(dirname "$dst")")"
+    set -l dst_dir "$(realpath "$(dirname "$dst")")"
 
-    set src "$(realpath "$src")"
-    set src_rel "$(realpath -s --relative-to="$dst_dir" "$src")"
+    set -l src "$(realpath "$src")"
+    set -l src_rel "$(realpath -s --relative-to="$dst_dir" "$src")"
 
     mkdir -p "$dst_dir"
     echo "Symlinking $src_rel to $dst"
