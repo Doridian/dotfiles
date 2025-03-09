@@ -10,7 +10,7 @@ end
 
 # TRY NOT TO EDIT ABOVE THIS LINE, IT MAKES AUTO UPDATES HARDER!
 
-function _fconfd_symlink_file -a src dst
+function _dotfiles_symlink_file -a src dst
     set -l dst_dir "$(realpath "$(dirname "$dst")")"
 
     set -l src "$(realpath "$src")"
@@ -21,7 +21,7 @@ function _fconfd_symlink_file -a src dst
     ln -sf "$src_rel" "$dst"
 end
 
-_fconfd_symlink_file "gitconfig-$_fconfd_mode" ~/.gitconfig
-_fconfd_symlink_file ssh.config ~/.ssh/config
-_fconfd_symlink_file config.fish ~/.config/fish/config.fish
+_dotfiles_symlink_file "gitconfig-$_dotfiles_mode" ~/.gitconfig
+_dotfiles_symlink_file ssh.config ~/.ssh/config
+_dotfiles_symlink_file config.fish ~/.config/fish/config.fish
 exit 0

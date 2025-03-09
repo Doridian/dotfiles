@@ -1,3 +1,4 @@
 function dotfiles-update
-    "$_fconfd_root_dir/../update.fish"
+    "$_dotfiles_root_dir/../update.fish"
+    _dotfiles_reload
 end

@@ -10,7 +10,7 @@ if test -z "$argv[1]"
 end
 
 set -l _install_script "#!/usr/bin/env fish
-set -U _fconfd_mode "$argv[1]"
+set -U _dotfiles_mode "$argv[1]"
 mkdir -p ~/Programming
 cd ~/Programming
 if ! test -d dotfiles
