@@ -35,7 +35,10 @@ function _fconfd_source_config_root -a dir
     end
 end
 
-set -x fish_function_path "$_fconfd_root_dir/functions" $fish_function_path
+set -l _fconfd_functions_dir "$_fconfd_root_dir/functions"
+if not contains $_fconfd_functions_dir $fish_function_path
+    set -x fish_function_path $fish_function_path[1] $_fconfd_functions_dir $fish_function_path[2..]
+end
 
 function fconfd_reload
     _fconfd_source_config_root always
