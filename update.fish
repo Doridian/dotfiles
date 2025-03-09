@@ -24,7 +24,7 @@ function _fconfd_symlink_file -a src dst
     ln -sf "$src_rel" "$dst"
 end
 
-_fconfd_symlink_file gitconfig ~/.gitconfig
+_fconfd_symlink_file "gitconfig-$_fconfd_mode" ~/.gitconfig
 _fconfd_symlink_file ssh.config ~/.ssh/config
 _fconfd_symlink_file config.fish ~/.config/fish/config.fish
 exit 0
