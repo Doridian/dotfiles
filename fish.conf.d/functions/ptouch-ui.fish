@@ -8,7 +8,7 @@ function _run_ptouch_print -a font_size text writepng
         set -f args $args --writepng "$writepng"
     end
 
-    ptouch-print $args 2>/dev/null
+    ptouch-print $args
 end
 
 function _ptouch_cmd_info -a cmd info
@@ -69,7 +69,7 @@ function ptouch-ui
             set -f input (string sub --start 2 "$input")
             if test "$input" = info
                 set_color blue
-                ptouch-print --info 2>/dev/null
+                ptouch-print --info
                 set_color normal
             else if test "$input" = print
                 _run_ptouch_print $font_size $text
@@ -112,7 +112,10 @@ function ptouch-ui
         echo $text
         set_color normal
 
+
+        set_color blue
         _run_ptouch_print $font_size $text /dev/stdout | imgcat /dev/stdin
-        or echo 'Failed to preview'
+        or set_color red && echo 'Failed to preview'
+        set_color normal
     end
 end
