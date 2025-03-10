@@ -54,7 +54,7 @@ function ptouch-ui
         echo $text
         set_color normal
 
-        _run_ptouch_print $font_size $text /dev/stdout | wezterm imgcat /dev/stdin
+        _run_ptouch_print $font_size $text /dev/stdout | imgcat /dev/stdin
         or echo 'Failed to preview'
     end
 end
