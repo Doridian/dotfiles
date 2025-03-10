@@ -28,8 +28,16 @@ function _ptouch_ui_help
     echo ' '
 
     echo 'ptouch-ui accepts two kinds of input:'
-    echo -n '    1. '; set_color red; echo -n 'Text'; set_color normal; echo ' to print'
-    echo -n '    2. '; set_color red; echo -n 'Commands'; set_color normal; echo ' (prefixed with !)'
+    echo -n '    1. '
+    set_color red
+    echo -n Text
+    set_color normal
+    echo ' to print'
+    echo -n '    2. '
+    set_color red
+    echo -n Commands
+    set_color normal
+    echo ' (prefixed with !)'
     echo 'Lines starting with ! are treated as commands'
     echo 'Any other line changes the text to print on the label to the current input'
 
@@ -38,10 +46,10 @@ function _ptouch_ui_help
     set_color green
     echo 'Commands:'
     set_color normal
-    _ptouch_cmd_info 'info' 'Print information about the label printer'
-    _ptouch_cmd_info 'print' 'Print the current text'
-    _ptouch_cmd_info 'help' 'Print this help message'
-    _ptouch_cmd_info 'exit' 'Exit the program'
+    _ptouch_cmd_info info 'Print information about the label printer'
+    _ptouch_cmd_info print 'Print the current text'
+    _ptouch_cmd_info help 'Print this help message'
+    _ptouch_cmd_info exit 'Exit the program'
     _ptouch_cmd_info '<number>' 'Set the font size to <number> (0 for automatic)'
 
     echo ' '
@@ -59,20 +67,20 @@ function ptouch-ui
     while read -L -f input
         if test (string sub --length 1 "$input") = '!'
             set -f input (string sub --start 2 "$input")
-            if test "$input" = 'info'
+            if test "$input" = info
                 set_color blue
                 ptouch-print --info 2>/dev/null
                 set_color normal
-            else if test "$input" = 'print'
+            else if test "$input" = print
                 _run_ptouch_print $font_size $text
-            else if test "$input" = 'help'
+            else if test "$input" = help
                 _ptouch_ui_help
                 continue
-            else if test "$input" = 'exit'
+            else if test "$input" = exit
                 break
-            else if test "$input" = 'quit'
+            else if test "$input" = quit
                 break
-            else if test "$input" = 'bye'
+            else if test "$input" = bye
                 break
             else if string match -r -- '^[0-9]+$' "$input" >/dev/null
                 set -f font_size $input
