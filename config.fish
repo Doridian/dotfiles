@@ -1,6 +1,6 @@
 set _dotfiles_loader_debug 0
 
-set _dotfiles_root_dir "$(dirname "$(realpath "$(status --current-filename)")")/fish.conf.d"
+set _dotfiles_root_dir (dirname (realpath (status --current-filename)))/fish.conf.d
 
 function _dotfiles_source_file -a file
     if test "$_dotfiles_loader_debug" -eq 1
