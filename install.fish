@@ -1,30 +1,22 @@
 #!/usr/bin/env fish
 
-# curl -fsL https://raw.githubusercontent.com/Doridian/dotfiles/refs/heads/main/install.fish | fish
+set -l mode $argv[1]
+set -l remote $argv[2]
 
-if test -z "$argv[1]"
+if test -z "$mode"
     echo "Usage: <mode> [remote]"
     echo "  mode: The mode to install the dotfiles in (endpoint or server)"
     echo "  remote: The remote to install the dotfiles on"
     exit 1
 end
 
-set -l _install_script "#!/usr/bin/env fish
-set -U _dotfiles_mode "$argv[1]"
-mkdir -p ~/Programming
-cd ~/Programming
-if ! test -d dotfiles
-     git clone https://github.com/Doridian/dotfiles
+if test -z "$remote"
+    set -U _dotfiles_mode "$mode"
+else
+    echo "$remote" >> "machines/$mode.txt"
+    git commit -a -m "Add machine $remote as a $mode"
+    git push
 end
-cd dotfiles
+
 git pull
-./update.fish
-exit 0"
-
-set -l remote $argv[2]
-if ! test -z "$remote"
-    echo "$_install_script" | ssh "$remote" -- /usr/bin/env fish
-    exit 0
-end
-
-eval "$_install_script"
+./update.fish gitpulldone
