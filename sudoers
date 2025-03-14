@@ -1,3 +1,2 @@
 %superadmins ALL=(ALL:ALL) ALL
 %superadmins ALL=(root) NOPASSWD: /usr/bin/ectool led *
-
