@@ -13,7 +13,7 @@ end
 if test -z "$remote"
     set -U _dotfiles_mode "$mode"
 else
-    echo "$remote" >> "machines/$mode.txt"
+    echo "$remote" >> 'machines/'"$mode"'s.txt'
     git commit -a -m "Add machine $remote as a $mode"
     git push
 end
