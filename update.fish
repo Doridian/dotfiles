@@ -21,8 +21,8 @@ function _dotfiles_symlink_file -a src dst
     ln -sf "$src_rel" "$dst"
 end
 
-_dotfiles_symlink_file "gitconfig-$_dotfiles_mode" ~/.gitconfig
-_dotfiles_symlink_file ssh.config ~/.ssh/config
-_dotfiles_symlink_file ssh.authorized_keys ~/.ssh/authorized_keys
+_dotfiles_symlink_file "user/gitconfig-$_dotfiles_mode" ~/.gitconfig
+_dotfiles_symlink_file user/ssh.config ~/.ssh/config
+_dotfiles_symlink_file user/ssh.authorized_keys ~/.ssh/authorized_keys
 _dotfiles_symlink_file config.fish ~/.config/fish/config.fish
 exit 0
