@@ -23,5 +23,6 @@ end
 
 _dotfiles_symlink_file "gitconfig-$_dotfiles_mode" ~/.gitconfig
 _dotfiles_symlink_file ssh.config ~/.ssh/config
+_dotfiles_symlink_file ssh.authorized_keys ~/.ssh/authorized_keys
 _dotfiles_symlink_file config.fish ~/.config/fish/config.fish
 exit 0
