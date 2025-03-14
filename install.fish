@@ -18,7 +18,7 @@ function _add_machine -a mode host
     end
 
     if ! string match -q -- "*.*" $host
-	set -l host "$host.foxden.network"
+	set -f host "$host.foxden.network"
     end
 
     echo "$host" >> 'machines/'"$mode"'s.txt'
