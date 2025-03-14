@@ -10,12 +10,31 @@ if test -z "$mode"
     exit 1
 end
 
+function _add_machine -a mode host
+    set -l listfile 'machines/'"$mode"'s.txt'
+    if ! test -f "$listfile"
+        echo "Unknown mode $mode"
+        return 1
+    end
+
+    if ! string match -q -- "*.*" $host
+	set -l host "$host.foxden.network"
+    end
+
+    echo "$host" >> 'machines/'"$mode"'s.txt'
+    git commit -a -m "Add machine $host as a $mode"
+    git push
+end
+
 if test -z "$remote"
     set -U _dotfiles_mode "$mode"
+
+    _add_machine $mode (hostname -f)
+    or exit 1
 else
-    echo "$remote" >> 'machines/'"$mode"'s.txt'
-    git commit -a -m "Add machine $remote as a $mode"
-    git push
+    _add_machine $mode $remote
+    or exit 1
+
     ./update-servers.fish "$remote"
 end
 
