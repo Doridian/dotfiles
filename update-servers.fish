@@ -23,6 +23,11 @@ function _server_init -a server
 	_server_update $server
 end
 
+if ! test -z "$argv[1]"
+	_server_init $argv[1]
+	exit 0
+end
+
 for server in (cat ./machines/servers.txt)
 	_server_init $server
 end
