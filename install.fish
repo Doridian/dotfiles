@@ -16,6 +16,7 @@ else
     echo "$remote" >> 'machines/'"$mode"'s.txt'
     git commit -a -m "Add machine $remote as a $mode"
     git push
+    ./update-servers.fish "$remote"
 end
 
 git pull

@@ -9,7 +9,7 @@ function _server_update -a server
 	or git remote set-url $gitremote "$server:~/dotfiles"
 
 	git push $gitremote main
-	ssh $server -- /bin/sh -c "'cd ~/dotfiles && git reset --hard'"
+	ssh $server -- /bin/sh -c "'cd ~/dotfiles && git reset --hard && ./update.fish gitpulldone'"
 end
 
 function _server_init -a server
