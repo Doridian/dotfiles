@@ -5,6 +5,7 @@ end
 
 function yt-dlp-auto
     set -f tmpfile (mktemp)
+    set -f tmpfile_used 0
 
     for line in (cat ./downloads.txt)
         set -f line (string trim $line)
@@ -17,18 +18,19 @@ function yt-dlp-auto
 
         if string match -q -- '*youtube.com/watch?v=*' $line
             echo "$line" >> $tmpfile
+            set -f tmpfile_used 1
             continue
         end
 
         _yt-dlp-one $line
-        or return 1
 
         echo 'Done, sleeping for 60 seconds...'
         sleep 60s
     end
 
-    _yt-dlp-one --batch-file "$tmpfile"
-    or return 1
+    if test "$tmpfile_used" = 1
+        _yt-dlp-one --batch-file "$tmpfile"
+    end
 
     rm -fv "$tmpfile"
 end
