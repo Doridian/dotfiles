@@ -10,6 +10,11 @@ end
 
 # TRY NOT TO EDIT ABOVE THIS LINE, IT MAKES AUTO UPDATES HARDER!
 
+function _dotfiles_symlink_dir -a src dst
+    rmdir "$dst" 2>/dev/null || true
+    _dotfiles_symlink_file "$src" "$dst"
+end
+
 function _dotfiles_symlink_file -a src dst
     set -l dst_dir (realpath (dirname "$dst"))
 
@@ -25,4 +30,5 @@ _dotfiles_symlink_file "user/gitconfig-$_dotfiles_mode" ~/.gitconfig
 _dotfiles_symlink_file user/ssh.config ~/.ssh/config
 _dotfiles_symlink_file user/ssh.authorized_keys ~/.ssh/authorized_keys
 _dotfiles_symlink_file config.fish ~/.config/fish/config.fish
+_dotfiles_symlink_dir pipewire.conf.d ~/.config/pipewire/pipewire.conf.d
 exit 0
