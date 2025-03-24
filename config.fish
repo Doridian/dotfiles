@@ -41,6 +41,11 @@ function _dotfiles_reload
         set -x fish_function_path $fish_function_path[1] $_dotfiles_functions_dir $fish_function_path[2..]
     end
 
+    set -l _dotfiles_completions_dir "$_dotfiles_root_dir/completions"
+    if not contains $_dotfiles_completions_dir $fish_complete_path
+        set -x fish_complete_path $fish_complete_path[1] $_dotfiles_completions_dir $fish_complete_path[2..]
+    end
+
     _dotfiles_source_config_root always
     if status is-interactive
         _dotfiles_source_config_root interactive
