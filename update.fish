@@ -23,7 +23,7 @@ function _dotfiles_symlink_file -a src dst
 
     mkdir -p "$dst_dir"
     echo "Symlinking $src_rel to $dst"
-    ln -sf "$src_rel" "$dst"
+    ln -Tsf "$src_rel" "$dst"
 end
 
 _dotfiles_symlink_file "user/gitconfig-$_dotfiles_mode" ~/.gitconfig
