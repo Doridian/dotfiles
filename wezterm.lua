@@ -40,28 +40,28 @@ config.ssh_domains = {
 config.color_scheme = 'shades-of-purple'
 
 config.colors = {
-	tab_bar = {
-		inactive_tab = {
-			bg_color = "#25143d",
-			fg_color = "#90879c",
-		},
-		inactive_tab_hover = {
-			bg_color = "#25143d",
-			fg_color = "#ebddff",
-		},
-		active_tab = {
-			bg_color = "#39294e",
-			fg_color = "#ebddff",
-		},
-		new_tab = {
-			bg_color = "#25143d",
-			fg_color = "#90879c",
-		},
-		new_tab_hover = {
-			bg_color = "#25143d",
-			fg_color = "#ebddff",
-		},
-	},
+  tab_bar = {
+    inactive_tab = {
+      bg_color = "#25143d",
+      fg_color = "#90879c",
+    },
+    inactive_tab_hover = {
+      bg_color = "#25143d",
+      fg_color = "#ebddff",
+    },
+    active_tab = {
+      bg_color = "#39294e",
+      fg_color = "#ebddff",
+    },
+    new_tab = {
+      bg_color = "#25143d",
+      fg_color = "#90879c",
+    },
+    new_tab_hover = {
+      bg_color = "#25143d",
+      fg_color = "#ebddff",
+    },
+  },
 }
 
 config.window_frame = {
@@ -78,28 +78,28 @@ config.window_frame = {
 }
 
 config.background = {
-	{
-		source = {
-			Color = '#0c0b28',
-		},
-		height = "100%",
-		width = "100%",
-	},
-	{
-		source = {
-			File = '/home/doridian/Pictures/Commissions/doripaw_alphabg.png'
-		},
-		hsb = {
-			brightness = 0.05,
-		},
-		opacity = 0.10,
-		height = "Contain",
-		width = "Contain",
-		horizontal_align = "Center",
-		vertical_align = "Middle",
-		repeat_x = "NoRepeat",
-		repeat_y = "NoRepeat",
-	},
+  {
+    source = {
+      Color = '#0c0b28',
+    },
+    height = "100%",
+    width = "100%",
+  },
+  {
+    source = {
+      File = '/home/doridian/Pictures/Commissions/doripaw_alphabg.png'
+    },
+    hsb = {
+      brightness = 0.05,
+    },
+    opacity = 0.10,
+    height = "Contain",
+    width = "Contain",
+    horizontal_align = "Center",
+    vertical_align = "Middle",
+    repeat_x = "NoRepeat",
+    repeat_y = "NoRepeat",
+  },
 }
 
 config.window_background_image_hsb = {
