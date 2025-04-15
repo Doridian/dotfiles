@@ -1,5 +1,6 @@
 function gonorm
-    set_ec_leds auto
+    sudo ectool led battery auto
+    sudo ectool led power auto
 
     set_screen_backlight 40
     set_kb_backlight 100
