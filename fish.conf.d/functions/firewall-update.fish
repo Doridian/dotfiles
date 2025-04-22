@@ -50,8 +50,8 @@ function firewall-update
 
     set -l iptables_dir "$_dotfiles_root_dir/../system/iptables/"
     set -l iptables_system_dir "/etc/iptables/"
-    set -l iptables_path "$_dotfiles_root_dir/../system/iptables/iptables.rules"
-    set -l ip6tables_path "$_dotfiles_root_dir/../system/iptables/ip6tables.rules"
+    set -l iptables_path "$iptables_dir/iptables.rules"
+    set -l ip6tables_path "$iptables_dir/ip6tables.rules"
 
     # IPv4
     echo "Updating $iptables_path and $ip6tables_path"
