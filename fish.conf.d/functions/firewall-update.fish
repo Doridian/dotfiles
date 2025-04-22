@@ -45,8 +45,8 @@ function _iptables_port -a proto port
 end
 
 function firewall-update
-	set -l open_ports_tcp 666 22000
-	set -l open_ports_udp 22000
+    set -l open_ports_tcp 666 22000
+    set -l open_ports_udp 22000
 
     set -l iptables_tmp_dir (mktemp -d)
     set -l iptables_system_dir "/etc/iptables/"
