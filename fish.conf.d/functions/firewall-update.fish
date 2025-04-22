@@ -9,7 +9,7 @@
 #   SERVICE - Will open port if systemd SYSTEM service is active by name SERVICE
 #   ~SERVICE - Will open port if systemd USER service is inactive by name SERVICE
 function firewall-update
-    set -l open_ports 22000/~syncthing t666/shutdownd t22/sshd
+    set -l open_ports 22000/~syncthing t6666/shutdownd t22/sshd
 
     set -l iptables_tmp_dir (mktemp -d)
     set -l iptables_system_dir "/etc/iptables/"
