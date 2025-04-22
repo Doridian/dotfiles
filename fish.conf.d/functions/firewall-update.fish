@@ -48,13 +48,13 @@ function firewall-update
 	set -l open_ports_tcp 666 22000
 	set -l open_ports_udp 22000
 
-    set -l iptables_dir "$_dotfiles_root_dir/../system/iptables/"
+    set -l iptables_tmp_dir (mktemp -d)
     set -l iptables_system_dir "/etc/iptables/"
-    set -l iptables_path "$iptables_dir/iptables.rules"
-    set -l ip6tables_path "$iptables_dir/ip6tables.rules"
+    set -l iptables_path "$iptables_tmp_dir/iptables.rules"
+    set -l ip6tables_path "$iptables_tmp_dir/ip6tables.rules"
 
     # IPv4
-    echo "Updating $iptables_path and $ip6tables_path"
+    echo "Updating temp files $iptables_path and $ip6tables_path"
     _ip4tables_header > $iptables_path
     _ip6tables_header > $ip6tables_path
     for port in $open_ports_tcp
@@ -70,5 +70,6 @@ function firewall-update
     _ip4tables_footer >> $iptables_path
     _ip6tables_footer >> $ip6tables_path
 
-    sudo bash -c "cp -fv $iptables_dir/*.rules $iptables_system_dir && systemctl restart iptables && systemctl restart ip6tables"
+    sudo bash -c "cp -fv $iptables_tmp_dir/*.rules $iptables_system_dir && systemctl restart iptables && systemctl restart ip6tables"
+    rm -rf $iptables_tmp_dir
 end
