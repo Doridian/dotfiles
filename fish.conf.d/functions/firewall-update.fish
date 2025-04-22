@@ -5,7 +5,6 @@ function _iptables_header
     echo ':FORWARD DROP [0:0]'
     echo ':OUTPUT ACCEPT [0:0]'
     echo '-A INPUT -i lo -j ACCEPT'
-    echo '-A INPUT -p tcp -m tcp --dport 22 -j ACCEPT' # SSH
     echo '-A INPUT -p udp -m udp --sport 5353 --dport 5353 -j ACCEPT' # mDNS
 end
 
@@ -40,32 +39,86 @@ function _ip6tables_footer
     echo 'COMMIT'
 end
 
-function _iptables_port -a proto port
-    echo "-A INPUT -p $proto -m $proto --dport $port -j ACCEPT"
+function _iptables_port -a protos port
+    set -f protospl (string split '+' $protos)
+    for proto in $protospl
+        if string match -r '^[0-9]+$' $port >/dev/null
+            echo "-A INPUT -p $proto -m $proto --dport $port -j ACCEPT"
+        else
+            echo "-A INPUT -p $proto -m multiport --dports $port -j ACCEPT"
+        end
+    end
 end
 
+function _iptables_port_if_service -a proto port service
+    if test (string sub --length 1 $service) = '~'
+        set -l service (string sub --start 2 $service)
+        set -f service_status (systemctl is-enabled --user $service)
+    else
+        set -f service_status (systemctl is-enabled $service)
+    end
+
+    echo "# Service port $proto/$port for $service ($service_status)"
+    if test $service_status != "enabled"
+        echo -n '# '
+    end
+    _iptables_port $proto $port
+end
+
+function _iptables_port_parse -a line
+    # Handle uPORT tPORT PORT
+    set -f proto (string sub --length 1 $line)
+    if test $proto = 't'
+        set -f proto 'tcp'
+        set -f line (string sub --start 2 $line)
+    else if test $proto = 'u'
+        set -f proto 'udp'
+        set -f line (string sub --start 2 $line)
+    else
+        set -f proto 'tcp+udp'
+    end
+
+    # Handle /(-)SERVICE
+    set -f svcspl (string split --max 2 '/' $line)
+    if test (count $svcspl) = 2
+        set -f port $svcspl[1]
+        set -f service $svcspl[2]
+    else
+        set -f port $line
+        set -f service ''
+    end
+
+    # And push out rule
+    if test $service = ''
+        _iptables_port $proto $port
+    else
+        _iptables_port_if_service $proto $port $service
+    end
+end
+
+# Syntax for open_ports: Array of the following:
+#   PORT[/(~)SERVICE] (example: 22000/-syncthing) - TCP+UDP port
+#   tPORT[/(~)SERVICE] (example: t22/sshd) - TCP port
+#   uPORT[/(~)SERVICE] (example: u123/ntpd) - UDP port
+#   PORT can be either:
+#   - A number (e.g. 22)
+#   - A range (e.g. 1000:2000)
+#   - A comma-separated combination of the above (e.g. 22,80,443,1000:2000), up to 16 items
+#   SERVICE - Will open port if systemd SYSTEM service is active by name SERVICE
+#   ~SERVICE - Will open port if systemd USER service is inactive by name SERVICE
 function firewall-update
-    set -l open_ports_tcp 666 22000
-    set -l open_ports_udp 22000
+    set -l open_ports 22000/~syncthing t666/shutdownd t22/sshd
 
     set -l iptables_tmp_dir (mktemp -d)
     set -l iptables_system_dir "/etc/iptables/"
     set -l iptables_path "$iptables_tmp_dir/iptables.rules"
     set -l ip6tables_path "$iptables_tmp_dir/ip6tables.rules"
 
-    # IPv4
-    echo "Updating temp files $iptables_path and $ip6tables_path"
+    echo "Updating temp files $iptables_path and $ip6tables_path" >&2
     _ip4tables_header > $iptables_path
     _ip6tables_header > $ip6tables_path
-    for port in $open_ports_tcp
-        set -l line (_iptables_port tcp $port)
-        echo $line >> $iptables_path
-        echo $line >> $ip6tables_path
-    end
-    for port in $open_ports_udp
-        set -l line (_iptables_port udp $port)
-        echo $line >> $iptables_path
-        echo $line >> $ip6tables_path
+    for port in $open_ports
+        _iptables_port_parse $port | tee -a $iptables_path $ip6tables_path
     end
     _ip4tables_footer >> $iptables_path
     _ip6tables_footer >> $ip6tables_path
