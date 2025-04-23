@@ -16,10 +16,12 @@ function firewall-update
     set -f inet_iface ''
     set -f inet_src ''
     for i in (seq 1 (count $def_route_spl))
-        if test $def_route_spl[$i] = 'dev'
-            set -f inet_iface $def_route_spl[(math $i + 1)]
-        else if test $def_route_spl[$i] = 'src'
-            set -f inet_src $def_route_spl[(math $i + 1)]
+        set -l def_route_t $def_route_spl[$i]
+        set -l def_route_v $def_route_spl[(math $i + 1)]
+        if test "$def_route_t" = 'dev'
+            set -f inet_iface $def_route_v
+        else if test "$def_route_t" = 'src'
+            set -f inet_src $def_route_v
         end
     end
     if test "$inet_iface" = ''
@@ -40,40 +42,60 @@ function firewall-update
         end
     end
 
-    set -l iptables_tmp_dir (mktemp -d)
     set -l iptables_system_dir "/etc/iptables/"
-    set -l iptables_path "$iptables_tmp_dir/iptables.rules"
-    set -l ip6tables_path "$iptables_tmp_dir/ip6tables.rules"
+    set -l iptables_system_path "$iptables_system_dir/iptables.rules"
+    set -l ip6tables_system_path "$iptables_system_dir/ip6tables.rules"
+    set -l iptables_tmp_dir (mktemp -d)
+    set -l iptables_tmp_path "$iptables_tmp_dir/iptables.rules"
+    set -l ip6tables_tmp_path "$iptables_tmp_dir/ip6tables.rules"
+    set -l tmp_file "$iptables_tmp_dir/tmp.dat"
 
-    echo "Updating temp files $iptables_path and $ip6tables_path" >&2
-    _iptables_header icmp 67 68 > $iptables_path
-    _iptables_header ipv6-icmp 547 546 > $ip6tables_path
+    echo "Updating temp files $iptables_tmp_path and $ip6tables_tmp_path" >&2
+    _iptables_header icmp 67 68 > $iptables_tmp_path
+    _iptables_header ipv6-icmp 547 546 > $ip6tables_tmp_path
     for port in $open_ports
-        _iptables_port_parse $port | tee -a $iptables_path >> $ip6tables_path
+        _iptables_port_parse $port | tee -a $iptables_tmp_path >> $ip6tables_tmp_path
     end
     for iface in $forward_ifaces_present
-        echo "-A FORWARD -i $iface -j ACCEPT" | tee -a $iptables_path >> $ip6tables_path
+        echo "-A FORWARD -i $iface -j ACCEPT" | tee -a $iptables_tmp_path >> $ip6tables_tmp_path
     end
-    _iptables_footer 'icmp-admin-prohibited' >> $iptables_path
-    _iptables_footer 'icmp6-adm-prohibited' >> $ip6tables_path
+    _iptables_footer 'icmp-admin-prohibited' >> $iptables_tmp_path
+    _iptables_footer 'icmp6-adm-prohibited' >> $ip6tables_tmp_path
 
     if test (count $forward_ifaces_present) > 0
-        _ip4tables_nat_header >> $iptables_path
-        echo "-A POSTROUTING ! -s $inet_src -o $inet_iface -j MASQUERADE" >> $iptables_path
-        echo 'COMMIT' >> $iptables_path
+        _ip4tables_nat_header >> $iptables_tmp_path
+        echo "-A POSTROUTING ! -s $inet_src -o $inet_iface -j MASQUERADE" >> $iptables_tmp_path
+        echo 'COMMIT' >> $iptables_tmp_path
     end
 
     _iptables_print_spacing
     echo 'IPv4 rules:'
     _iptables_print_spacing
-    cat $iptables_path
+    cat "$iptables_tmp_path"
+    _iptables_print_spacing
+    if diff --color=auto -uN "$iptables_system_path" "$iptables_tmp_path"
+        echo '[DIFF] IPv4 rules unchnaged'
+    else
+        _iptables_print_spacing
+        echo '[DIFF] IPv4 rules changed'
+        sudo bash -c "cp -fv '$iptables_tmp_path' '$iptables_system_path' && systemctl restart iptables"
+    end
+    _iptables_print_spacing
+
     _iptables_print_spacing
     echo 'IPv6 rules:'
     _iptables_print_spacing
-    cat $ip6tables_path
+    cat "$ip6tables_tmp_path"
+    _iptables_print_spacing
+    if diff --color=auto -uN "$ip6tables_system_path" "$ip6tables_tmp_path"
+        echo '[DIFF] IPv6 rules unchnaged'
+    else
+        _iptables_print_spacing
+        echo '[DIFF] IPv6 rules changed'
+        sudo bash -c "cp -fv '$ip6tables_tmp_path' '$ip6tables_system_path' && systemctl restart ip6tables"
+    end
     _iptables_print_spacing
 
-    sudo bash -c "cp -fv $iptables_tmp_dir/*.rules $iptables_system_dir && systemctl restart iptables && systemctl restart ip6tables"
     rm -rf $iptables_tmp_dir
 end
 
