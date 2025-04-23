@@ -9,9 +9,9 @@
 #   SERVICE - Will open port if systemd SYSTEM service is active by name SERVICE
 #   ~SERVICE - Will open port if systemd USER service is inactive by name SERVICE
 function firewall-update
-    set -f open_ports 22000/~syncthing t6666/shutdownd t22/sshd 27000:27100
     if test "$firewall_open_ports" = ""
         echo '[RULE] Using default rules' >&2
+        set -f open_ports 22000/~syncthing t6666/shutdownd t22/sshd 27000:27100
     else
         echo "[RULE] Using custom rules" >&2
         set -f open_ports $firewall_open_ports
