@@ -14,23 +14,12 @@ function firewall-update
 
     set -f def_route_spl (string split ' ' (ip -o route get 8.8.8.8))
     set -f inet_iface ''
-    set -f inet_src ''
     for i in (seq 1 (count $def_route_spl))
         set -l def_route_t $def_route_spl[$i]
-        set -l def_route_v $def_route_spl[(math $i + 1)]
         if test "$def_route_t" = 'dev'
-            set -f inet_iface $def_route_v
-        else if test "$def_route_t" = 'src'
-            set -f inet_src $def_route_v
+            set -f inet_iface $def_route_spl[(math $i + 1)]
+            break
         end
-    end
-    if test "$inet_iface" = ''
-        echo "[CRIT] No default route found, exiting" >&2
-        return 1
-    end
-    if test "$inet_src" = ''
-        echo "[CRIT] No source address found, exiting" >&2
-        return 1
     end
 
     set -f trusted_ifaces_present ()
@@ -68,9 +57,9 @@ function firewall-update
     _iptables_footer 'icmp-admin-prohibited' >> $iptables_tmp_path
     _iptables_footer 'icmp6-adm-prohibited' >> $ip6tables_tmp_path
 
-    if test (count $trusted_ifaces_present) != 0
+    if test (count $trusted_ifaces_present) != 0 && test "$inet_iface" != ''
         _ip4tables_nat_header >> $iptables_tmp_path
-        echo "-A POSTROUTING ! -s $inet_src -o $inet_iface -j MASQUERADE" >> $iptables_tmp_path
+        echo "-A POSTROUTING -o $inet_iface -j MASQUERADE" >> $iptables_tmp_path
         echo 'COMMIT' >> $iptables_tmp_path
     end
 
