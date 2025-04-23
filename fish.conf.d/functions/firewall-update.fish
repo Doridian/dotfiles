@@ -25,20 +25,26 @@ function firewall-update
         end
     end
     if test "$inet_iface" = ''
-        echo "No default route found, exiting" >&2
+        echo "[CRIT] No default route found, exiting" >&2
         return 1
     end
     if test "$inet_src" = ''
-        echo "No source address found, exiting" >&2
+        echo "[CRIT] No source address found, exiting" >&2
         return 1
     end
 
-    set -l forward_ifaces_present ()
+    set -f forward_ifaces_present ()
     for iface in $forward_ifaces
-        if test -d /sys/class/net/$iface
-            set -l forward_ifaces_present $forward_ifaces_present $iface
+        set -f forward_present ()
+        for found in (find /sys/class/net -maxdepth 1 -name "$iface")
+            set -l found_name (basename "$found")
+            set -f forward_ifaces_present $forward_ifaces_present $found_name
+            set -f forward_present $forward_present $found_name
+        end
+        if test (count $forward_present) = 0
+            echo "[NAT ] Specifier $iface not detected, ignoring" >&2
         else
-            echo "Forward-allowed interface $iface not found, ignoring" >&2
+            echo "[NAT ] Specifier $iface detected [$forward_present], adding to rules" >&2
         end
     end
 
@@ -50,7 +56,6 @@ function firewall-update
     set -l ip6tables_tmp_path "$iptables_tmp_dir/ip6tables.rules"
     set -l tmp_file "$iptables_tmp_dir/tmp.dat"
 
-    echo "Updating temp files $iptables_tmp_path and $ip6tables_tmp_path" >&2
     _iptables_header icmp 67 68 > $iptables_tmp_path
     _iptables_header ipv6-icmp 547 546 > $ip6tables_tmp_path
     for port in $open_ports
@@ -69,7 +74,7 @@ function firewall-update
     end
 
     _iptables_print_spacing
-    echo 'IPv4 rules:'
+    echo '[STAT] IPv4 rules:'
     _iptables_print_spacing
     cat "$iptables_tmp_path"
     _iptables_print_spacing
@@ -78,12 +83,15 @@ function firewall-update
     else
         _iptables_print_spacing
         echo '[DIFF] IPv4 rules changed'
-        sudo bash -c "cp -fv '$iptables_tmp_path' '$iptables_system_path' && systemctl restart iptables"
+        if ! sudo bash -c "cp -fv '$iptables_tmp_path' '$iptables_system_path' && systemctl restart iptables"
+            rm -rf "$iptables_tmp_dir"
+            return 1
+        end
     end
     _iptables_print_spacing
 
     _iptables_print_spacing
-    echo 'IPv6 rules:'
+    echo '[STAT] IPv6 rules:'
     _iptables_print_spacing
     cat "$ip6tables_tmp_path"
     _iptables_print_spacing
@@ -92,11 +100,14 @@ function firewall-update
     else
         _iptables_print_spacing
         echo '[DIFF] IPv6 rules changed'
-        sudo bash -c "cp -fv '$ip6tables_tmp_path' '$ip6tables_system_path' && systemctl restart ip6tables"
+        if ! sudo bash -c "cp -fv '$ip6tables_tmp_path' '$ip6tables_system_path' && systemctl restart ip6tables"
+            rm -rf "$iptables_tmp_dir"
+            return 1
+        end
     end
     _iptables_print_spacing
 
-    rm -rf $iptables_tmp_dir
+    rm -rf "$iptables_tmp_dir"
 end
 
 function _iptables_print_spacing
