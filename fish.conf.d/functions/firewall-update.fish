@@ -36,7 +36,7 @@ function firewall-update
         if test -d /sys/class/net/$iface
             set -l forward_ifaces_present $forward_ifaces_present $iface
         else
-            echo "Warning: Interface $iface not found, ignoring" >&2
+            echo "Forward-allowed interface $iface not found, ignoring" >&2
         end
     end
 
