@@ -48,7 +48,7 @@ function firewall-update
         end
     end
 
-    set -l iptables_system_dir "/etc/iptables/"
+    set -l iptables_system_dir "/etc/iptables"
     set -l iptables_system_path "$iptables_system_dir/iptables.rules"
     set -l ip6tables_system_path "$iptables_system_dir/ip6tables.rules"
     set -l iptables_tmp_dir (mktemp -d)
