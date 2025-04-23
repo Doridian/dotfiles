@@ -10,7 +10,7 @@
 #   ~SERVICE - Will open port if systemd USER service is inactive by name SERVICE
 function firewall-update
     set -l open_ports 22000/~syncthing t6666/shutdownd t22/sshd 27000:27100
-    set -l forward_ifaces thunderbolt0
+    set -l forward_ifaces 'thunderbolt*'
 
     set -f def_route_spl (string split ' ' (ip -o route get 8.8.8.8))
     set -f inet_iface ''
@@ -158,18 +158,17 @@ function _iptables_port -a protos port
 end
 
 function _iptables_port_if_service -a proto port service
-    if test (string sub --length 1 $service) = '~'
-        set -l service (string sub --start 2 $service)
-        set -f service_status (systemctl is-enabled --user $service)
+    if test (string sub --length 1 "$service") = '~'
+        set -l service (string sub --start 2 "$service")
+        set -f service_status (systemctl is-enabled --user "$service")
     else
-        set -f service_status (systemctl is-enabled $service)
+        set -f service_status (systemctl is-enabled "$service")
     end
 
-    echo "# Service port $proto/$port for $service ($service_status)"
-    if test $service_status != "enabled"
-        echo -n '# '
+    echo "[PORT] Service port $proto/$port for $service ($service_status)" >&2
+    if test "$service_status" = 'enabled'
+        _iptables_port "$proto" "$port"
     end
-    _iptables_port $proto $port
 end
 
 function _iptables_port_parse -a line
