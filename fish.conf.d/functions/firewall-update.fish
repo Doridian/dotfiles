@@ -9,7 +9,7 @@
 #   SERVICE - Will open port if systemd SYSTEM service is active by name SERVICE
 #   ~SERVICE - Will open port if systemd USER service is inactive by name SERVICE
 function firewall-update
-    set -l open_ports 22000/~syncthing t6666/shutdownd t22/sshd u27000:27100
+    set -l open_ports 22000/~syncthing t6666/shutdownd t22/sshd 27000:27100
     set -l forward_ifaces thunderbolt0
 
     set -f def_route_spl (string split ' ' (ip -o route get 8.8.8.8))
