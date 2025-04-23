@@ -1,4 +1,4 @@
-# Syntax for open_ports: Array of the following:
+# Syntax for firewall_open_ports: Array of the following:
 #   PORT[/(~)SERVICE] (example: 22000/-syncthing) - TCP+UDP port
 #   tPORT[/(~)SERVICE] (example: t22/sshd) - TCP port
 #   uPORT[/(~)SERVICE] (example: u123/ntpd) - UDP port
@@ -9,8 +9,13 @@
 #   SERVICE - Will open port if systemd SYSTEM service is active by name SERVICE
 #   ~SERVICE - Will open port if systemd USER service is inactive by name SERVICE
 function firewall-update
-    set -l open_ports 22000/~syncthing t6666/shutdownd t22/sshd 27000:27100
-    set -l trusted_ifaces 'thunderbolt*'
+    set -f open_ports 22000/~syncthing t6666/shutdownd t22/sshd 27000:27100
+    if test "$firewall_open_ports" = ""
+        echo '[RULE] Using default rules' >&2
+    else
+        echo "[RULE] Using custom rules" >&2
+        set -f open_ports $firewall_open_ports
+    end
 
     set -f def_route_spl (string split ' ' (ip -o route get 8.8.8.8))
     set -f inet_iface ''
@@ -23,7 +28,7 @@ function firewall-update
     end
 
     set -f trusted_ifaces_present ()
-    for iface in $trusted_ifaces
+    for iface in $firewall_trusted_interfaces
         set -f ifaces_present ()
         for found in (find /sys/class/net -maxdepth 1 -name "$iface")
             set -l found_name (basename "$found")
