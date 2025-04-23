@@ -47,6 +47,7 @@ function firewall-update
             echo "[NAT ] Specifier $iface detected [$forward_present], adding to rules" >&2
         end
     end
+    echo "[NAT ] Forwarding interfaces: $forward_ifaces_present" >&2
 
     set -l iptables_system_dir "/etc/iptables"
     set -l iptables_system_path "$iptables_system_dir/iptables.rules"
@@ -67,7 +68,7 @@ function firewall-update
     _iptables_footer 'icmp-admin-prohibited' >> $iptables_tmp_path
     _iptables_footer 'icmp6-adm-prohibited' >> $ip6tables_tmp_path
 
-    if test (count $forward_ifaces_present) > 0
+    if test (count $forward_ifaces_present) != 0
         _ip4tables_nat_header >> $iptables_tmp_path
         echo "-A POSTROUTING ! -s $inet_src -o $inet_iface -j MASQUERADE" >> $iptables_tmp_path
         echo 'COMMIT' >> $iptables_tmp_path
