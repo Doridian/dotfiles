@@ -10,7 +10,7 @@
 #   ~SERVICE - Will open port if systemd USER service is inactive by name SERVICE
 function firewall-update
     set -l open_ports 22000/~syncthing t6666/shutdownd t22/sshd 27000:27100
-    set -l forward_ifaces 'thunderbolt*'
+    set -l trusted_ifaces 'thunderbolt*'
 
     set -f def_route_spl (string split ' ' (ip -o route get 8.8.8.8))
     set -f inet_iface ''
@@ -33,21 +33,21 @@ function firewall-update
         return 1
     end
 
-    set -f forward_ifaces_present ()
-    for iface in $forward_ifaces
-        set -f forward_present ()
+    set -f trusted_ifaces_present ()
+    for iface in $trusted_ifaces
+        set -f ifaces_present ()
         for found in (find /sys/class/net -maxdepth 1 -name "$iface")
             set -l found_name (basename "$found")
-            set -f forward_ifaces_present $forward_ifaces_present $found_name
+            set -f trusted_ifaces_present $trusted_ifaces_present $found_name
             set -f forward_present $forward_present $found_name
         end
-        if test (count $forward_present) = 0
-            echo "[NAT ] Specifier $iface not detected, ignoring" >&2
+        if test (count $ifaces_present) = 0
+            echo "[TRST] Specifier $iface not detected, ignoring" >&2
         else
-            echo "[NAT ] Specifier $iface detected [$forward_present], adding to rules" >&2
+            echo "[TRST] Specifier $iface detected [$forward_present]" >&2
         end
     end
-    echo "[NAT ] Forwarding interfaces: $forward_ifaces_present" >&2
+    echo "[TRST] Interfaces: $trusted_ifaces_present" >&2
 
     set -l iptables_system_dir "/etc/iptables"
     set -l iptables_system_path "$iptables_system_dir/iptables.rules"
@@ -62,13 +62,13 @@ function firewall-update
     for port in $open_ports
         _iptables_port_parse $port | tee -a $iptables_tmp_path >> $ip6tables_tmp_path
     end
-    for iface in $forward_ifaces_present
-        echo "-A FORWARD -i $iface -j ACCEPT" | tee -a $iptables_tmp_path >> $ip6tables_tmp_path
+    for iface in $trusted_ifaces_present
+        _iptables_iface "$iface" | tee -a $iptables_tmp_path >> $ip6tables_tmp_path
     end
     _iptables_footer 'icmp-admin-prohibited' >> $iptables_tmp_path
     _iptables_footer 'icmp6-adm-prohibited' >> $ip6tables_tmp_path
 
-    if test (count $forward_ifaces_present) != 0
+    if test (count $trusted_ifaces_present) != 0
         _ip4tables_nat_header >> $iptables_tmp_path
         echo "-A POSTROUTING ! -s $inet_src -o $inet_iface -j MASQUERADE" >> $iptables_tmp_path
         echo 'COMMIT' >> $iptables_tmp_path
@@ -127,6 +127,11 @@ function _iptables_header -a icmp dhcp_server_port dhcp_client_port
     end
     echo "-A INPUT -p udp -m udp --sport $dhcp_server_port --dport $dhcp_client_port -j ACCEPT" # DHCP
     echo '-A INPUT -p udp -m udp --sport 5353 --dport 5353 -j ACCEPT' # mDNS
+end
+
+function _iptables_iface -a iface
+    echo "-A INPUT -i $iface -j ACCEPT"
+    echo "-A FORWARD -i $iface -j ACCEPT"
 end
 
 function _ip4tables_nat_header
