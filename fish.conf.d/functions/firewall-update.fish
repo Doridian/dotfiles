@@ -62,11 +62,11 @@ function firewall-update
     _iptables_footer 'icmp-admin-prohibited' >> $iptables_tmp_path
     _iptables_footer 'icmp6-adm-prohibited' >> $ip6tables_tmp_path
 
+    _ip4tables_nat_header >> $iptables_tmp_path
     if test (count $trusted_ifaces_present) != 0 && test "$inet_iface" != ''
-        _ip4tables_nat_header >> $iptables_tmp_path
         echo "-A POSTROUTING -o $inet_iface -j MASQUERADE" >> $iptables_tmp_path
-        echo 'COMMIT' >> $iptables_tmp_path
     end
+    echo 'COMMIT' >> $iptables_tmp_path
 
     _iptables_print_spacing
     echo '[STAT] IPv4 rules:'
