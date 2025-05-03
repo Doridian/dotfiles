@@ -1,2 +1,10 @@
 %superadmins ALL=(ALL:ALL) ALL
 %superadmins ALL=(root) NOPASSWD: /usr/bin/ectool led *
+%superadmins ALL=(root) NOPASSWD: /usr/bin/systemctl restart lactd
+%superadmins ALL=(root) NOPASSWD: /usr/bin/systemctl status lactd
+%superadmins ALL=(root) NOPASSWD: /usr/bin/systemctl stop lactd
+%superadmins ALL=(root) NOPASSWD: /usr/bin/systemctl start lactd
+%superadmins ALL=(root) NOPASSWD: /usr/bin/systemctl enable lactd
+%superadmins ALL=(root) NOPASSWD: /usr/bin/systemctl disable lactd
+%superadmins ALL=(root) NOPASSWD: /usr/bin/systemctl enable --now lactd
+%superadmins ALL=(root) NOPASSWD: /usr/bin/systemctl disable --now lactd
