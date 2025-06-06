@@ -247,6 +247,7 @@ typec_ucsi
 ucsi_acpi
 udp_diag
 udp_tunnel
+uinput
 uleds
 usbhid
 uvc
