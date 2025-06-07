@@ -32,6 +32,9 @@ cdc_acm
 cec
 cfg80211
 chacha_x86_64
+cifs
+cifs_arc4
+cifs_md4
 cls_u32
 cmac
 cp210x
@@ -87,6 +90,7 @@ i2c_hid_acpi
 i2c_piix4
 i2c_smbus
 i8042
+ib_cm
 ib_core
 ib_uverbs
 industrialio
@@ -99,6 +103,7 @@ ip6t_REJECT
 ip_tables
 ipt_REJECT
 irqbypass
+iw_cm
 joydev
 k10temp
 kfifo_buf
@@ -144,6 +149,8 @@ nft_ct
 nft_masq
 nft_reject
 nft_reject_ipv4
+nls_ucs2_utils
+nls_utf8
 ntsync
 nvme
 nvme_auth
@@ -161,6 +168,7 @@ qmi_helpers
 qrtr
 qrtr_mhi
 rapl
+rdma_cm
 rfcomm
 rfkill
 roles
@@ -238,6 +246,7 @@ thunderbolt
 thunderbolt_net
 trusted
 ttm
+tun
 tunnel4
 tunnel6
 typec
