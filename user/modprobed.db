@@ -122,6 +122,8 @@ lz4
 lz4_compress
 mac80211
 mac_hid
+macvlan
+macvtap
 mc
 mhi
 michael_mic
@@ -239,6 +241,7 @@ sparse_keymap
 spd5118
 stp
 sunrpc
+tap
 tcp_bbr
 tcp_diag
 tee
@@ -262,7 +265,11 @@ usbhid
 usblp
 uvc
 uvcvideo
+veth
 vfat
+vhost
+vhost_iotlb
+vhost_net
 video
 videobuf2_common
 videobuf2_memops
@@ -279,6 +286,11 @@ xfrm_interface
 xfrm_user
 xfs
 xpad
+xt_MASQUERADE
+xt_addrtype
+xt_comment
 xt_conntrack
+xt_mark
 xt_multiport
+xt_nat
 xt_tcpudp
