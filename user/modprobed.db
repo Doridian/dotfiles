@@ -256,11 +256,13 @@ typec
 typec_displayport
 typec_thunderbolt
 typec_ucsi
+uas
 ucsi_acpi
 udp_diag
 udp_tunnel
 uinput
 uleds
+usb_storage
 usbhid
 usblp
 uvc
