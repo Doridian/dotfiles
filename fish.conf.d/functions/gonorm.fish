@@ -8,4 +8,6 @@ function gonorm
     if ! is_on_battery
         powerprofilesctl set balanced
     end
+
+    dimland stop || true
 end
