@@ -85,7 +85,7 @@ config.background = {
     height = "100%",
     width = "100%",
   },
-  {
+  --[[{
     source = {
       File = '/home/doridian/Pictures/Commissions/doripaw_alphabg.png'
     },
@@ -99,7 +99,7 @@ config.background = {
     vertical_align = "Middle",
     repeat_x = "NoRepeat",
     repeat_y = "NoRepeat",
-  },
+  },]]
 }
 
 config.window_background_image_hsb = {
