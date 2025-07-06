@@ -67,6 +67,7 @@ drm_ttm_helper
 eeepc_wmi
 encrypted_keys
 esp4
+exfat
 fat
 ff_memless
 geniv
