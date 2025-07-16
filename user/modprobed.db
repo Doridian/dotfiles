@@ -3,6 +3,7 @@ acpi_pad
 act_csum
 aesni_intel
 af_alg
+af_key
 algif_hash
 algif_skcipher
 amd_atl
@@ -95,6 +96,9 @@ i2c_smbus
 i8042
 ib_cm
 ib_core
+ib_ipoib
+ib_iser
+ib_umad
 ib_uverbs
 industrialio
 industrialio_triggered_buffer
@@ -118,6 +122,7 @@ libarc4
 libchacha
 libchacha20poly1305
 libcurve25519_generic
+libiscsi
 llc
 lockd
 loop
@@ -145,6 +150,7 @@ nf_reject_ipv6
 nf_tables
 nfnetlink
 nfnetlink_acct
+nfnetlink_log
 nfs
 nfs_localio
 nfsv4
@@ -177,11 +183,15 @@ qrtr
 qrtr_mhi
 rapl
 rdma_cm
+rdma_ucm
 rfcomm
 rfkill
 roles
+rpcrdma
 rpcsec_gss_krb5
 sch_htb
+sch_ingress
+scsi_transport_iscsi
 seqiv
 serio
 sg
@@ -285,6 +295,11 @@ videobuf2_memops
 videobuf2_v4l2
 videobuf2_vmalloc
 videodev
+vmw_vmci
+vmw_vsock_virtio_transport_common
+vmw_vsock_vmci_transport
+vsock
+vsock_loopback
 wireguard
 wmi
 wmi_bmof
