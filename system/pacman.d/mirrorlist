@@ -1,0 +1,2 @@
+Server = https://archlinux.foxden.network/$repo/os/$arch
+Server = https://archlinux.doridian.net/$repo/os/$arch

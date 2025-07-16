@@ -1,0 +1,2 @@
+Server = https://cachyos.foxden.network/repo/$arch/$repo
+Server = https://cachyos.doridian.net/repo/$arch/$repo
