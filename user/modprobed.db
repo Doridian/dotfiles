@@ -98,6 +98,7 @@ lz4
 lz4_compress
 mac80211
 mac_hid
+mc
 mhi
 michael_mic
 mousedev
@@ -209,8 +210,15 @@ ucsi_acpi
 udp_tunnel
 uleds
 usb_storage
+uvc
+uvcvideo
 vfat
 video
+videobuf2_common
+videobuf2_memops
+videobuf2_v4l2
+videobuf2_vmalloc
+videodev
 wireguard
 wmi
 wmi_bmof
