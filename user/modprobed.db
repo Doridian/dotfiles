@@ -48,6 +48,7 @@ cros_ec_debugfs
 cros_ec_dev
 cros_ec_hwmon
 cros_ec_lpcs
+cros_ec_proto
 cros_ec_sysfs
 cros_usbpd_charger
 cros_usbpd_logger
@@ -133,6 +134,7 @@ mac_hid
 macvlan
 macvtap
 mc
+md_mod
 mhi
 michael_mic
 mlx4_core
@@ -178,9 +180,12 @@ polyval_clmulni
 polyval_generic
 pps_core
 ptp
+qcom_scm
+qcom_tzmem
 qmi_helpers
 qrtr
 qrtr_mhi
+raid1
 rapl
 rdma_cm
 rdma_ucm
