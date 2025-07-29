@@ -195,12 +195,14 @@ soundwire_generic_allocation
 sp5100_tco
 spd5118
 stp
+tap
 tcp_bbr
 tee
 thunderbolt
 thunderbolt_net
 trusted
 ttm
+tun
 typec
 typec_displayport
 typec_thunderbolt
@@ -213,6 +215,9 @@ usb_storage
 uvc
 uvcvideo
 vfat
+vhost
+vhost_iotlb
+vhost_net
 video
 videobuf2_common
 videobuf2_memops
