@@ -1,0 +1,25 @@
+#%PAM-1.0
+
+#auth       required                                            pam_faillock.so      preauth
+auth       [success=ignore ignore=ignore default=1]            pam_succeed_if.so    quiet uid >= 2000 uid <= 2999
+auth       [success=1 ignore=ignore default=bad]               pam_kanidm.so
+auth       [success=ok ignore=ignore default=bad]              pam_unix.so          try_first_pass
+#auth       [default=die]                                       pam_faillock.so      authfail
+auth       optional                                            pam_permit.so
+auth       required                                            pam_env.so
+#auth       required                                            pam_faillock.so      authsucc
+
+account    [success=ignore ignore=ignore default=1]            pam_succeed_if.so    quiet uid >= 2000 uid <= 2999
+account    [success=1 ignore=ignore default=bad]               pam_kanidm.so
+account    [success=ok ignore=ignore default=bad]              pam_unix.so
+account    required                                            pam_permit.so
+
+-password  [success=1 default=ignore]  pam_systemd_home.so
+password   required                    pam_unix.so          try_first_pass nullok shadow
+password   optional                    pam_permit.so
+
+session    required                                            pam_limits.so
+session    [success=3 default=ignore]                          pam_succeed_if.so    quiet use_uid service in crond
+session    [success=ignore ignore=ignore default=1]            pam_succeed_if.so    quiet uid >= 2000 uid <= 2999
+session    [success=1 ignore=ignore default=bad]               pam_kanidm.so
+session    [success=ok ignore=ignore default=bad]              pam_unix.so

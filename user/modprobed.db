@@ -61,7 +61,9 @@ drm_suballoc_helper
 drm_ttm_helper
 eeepc_wmi
 encrypted_keys
+esp4
 fat
+geniv
 ghash_clmulni_intel
 gpio_amdpt
 gpio_cros_ec
@@ -173,6 +175,7 @@ rpcrdma
 rpcsec_gss_krb5
 sch_htb
 scsi_transport_iscsi
+seqiv
 sg
 sha1_ssse3
 sha512_ssse3
