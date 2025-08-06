@@ -1,0 +1,6 @@
+ACTION=="add", KERNEL=="viauled::kbd_backlight", TAG+="systemd"
+
+ACTION=="add", SUBSYSTEM=="backlight", RUN+="/bin/chgrp uucp /sys/class/backlight/%k/brightness"
+ACTION=="add", SUBSYSTEM=="backlight", RUN+="/bin/chmod g+w /sys/class/backlight/%k/brightness"
+ACTION=="add", SUBSYSTEM=="leds", RUN+="/bin/chgrp uucp /sys/class/leds/%k/brightness /sys/class/leds/%k/multi_intensity /sys/class/leds/%k/trigger"
+ACTION=="add", SUBSYSTEM=="leds", RUN+="/bin/chmod g+w /sys/class/leds/%k/brightness /sys/class/leds/%k/multi_intensity /sys/class/leds/%k/trigger"

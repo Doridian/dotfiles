@@ -1,6 +1,6 @@
 function gonorm
-    sudo ectool led battery auto
-    sudo ectool led power auto
+    set-led --led chromeos:multicolor:charging --trigger default
+    set-led --led chromeos:white:power --trigger default
 
     set_screen_backlight 40
     set_kb_backlight 100

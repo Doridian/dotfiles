@@ -1,0 +1,46 @@
+#!/usr/bin/env python3
+from argparse import ArgumentParser
+from os import path
+
+def set_trigger(led_path: str, trigger: str) -> None:
+    trigger_path = path.join(led_path, "trigger")
+    with open(trigger_path, "w") as f:
+        f.write(trigger + "\n")
+
+def main():
+    parser = ArgumentParser()
+    parser.add_argument("--color", help="The color to set the LED to", default=None)
+    parser.add_argument("--brightness", help="The brightness to set the LED to (in percent)", type=int, default=None)
+    parser.add_argument("--trigger", help="Set the LED to an automatic trigger", default=None)
+    parser.add_argument("--led", help="The LED to set (e.g., 'chromeos:white:power')", required=True)
+    args = parser.parse_args()
+
+    if args.trigger is None and args.brightness is None:
+        raise ValueError("You must specify either --trigger or --brightness")
+
+    led_path = f"/sys/class/leds/{args.led}"
+
+    if args.trigger:
+        set_trigger(led_path, args.trigger)
+        return
+
+    with open(path.join(led_path, "max_brightness"), "r") as f:
+        max_brightness = int(f.read().strip())
+
+    set_trigger(led_path, "none")
+    brightness_value = (args.brightness * max_brightness) // 100
+    with open(path.join(led_path, "brightness"), "w") as f:
+        f.write(str(brightness_value) + "\n")
+
+    if args.color:
+        with open(path.join(led_path, "multi_index"), "r") as f:
+            indices = f.read().strip().split(" ")
+        index = indices.index(args.color)
+        output = ["0"] * len(indices)
+        output[index] = str(max_brightness)
+        with open(path.join(led_path, "multi_intensity"), "w") as f:
+            f.write(" ".join(output) + "\n")
+
+
+if __name__ == "__main__":
+    main()
