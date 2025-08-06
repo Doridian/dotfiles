@@ -1,0 +1,13 @@
+const WHEEL_SERVICES = {
+	"fw-fanctrl.service": true,
+	"lactd.service": true,
+};
+
+polkit.addRule(function(action, subject) {
+  if (action.id === "org.freedesktop.systemd1.manage-units" &&
+    WHEEL_SERVICES[action.lookup("unit")] &&
+    subject.isInGroup("wheel"))
+    {
+      return polkit.Result.YES;
+    }
+});
