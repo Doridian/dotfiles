@@ -1,0 +1,2 @@
+alias sudo=run0
+
