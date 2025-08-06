@@ -1,2 +1,2 @@
-alias sudo=run0
+alias sudo='run0 --background=""'
 
