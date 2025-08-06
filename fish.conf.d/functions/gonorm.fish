@@ -5,9 +5,9 @@ function gonorm
     set_screen_backlight 40
     set_kb_backlight 100
 
-    if ! is_on_battery
-        powerprofilesctl set balanced
-    end
+    #if ! is_on_battery
+    #    powerprofilesctl set balanced
+    #end
 
     dimland stop || true
 end
