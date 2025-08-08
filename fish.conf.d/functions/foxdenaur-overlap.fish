@@ -10,4 +10,3 @@ function foxdenaur-overlap
     end
     rm -f /tmp/foxdenaur-overlap.txt /tmp/foxdenaur-overlap-other.txt
 end
-
