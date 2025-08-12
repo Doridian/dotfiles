@@ -13,9 +13,11 @@ amd_sfh
 amdtee
 amdxcp
 amdxdna
+apple_mfi_fastcharge
 asn1_encoder
 asus_wmi
 ath12k
+atlantic
 auth_rpcgss
 bluetooth
 bnep
@@ -30,6 +32,7 @@ ccp
 cdc_acm
 cec
 cfg80211
+ch341
 cifs
 cifs_arc4
 cifs_md4
@@ -70,6 +73,7 @@ gpio_cros_ec
 gpio_generic
 gpu_sched
 grace
+hid_apple
 hid_logitech_dj
 hid_logitech_hidpp
 hid_multitouch
@@ -117,6 +121,7 @@ lz4
 lz4_compress
 mac80211
 mac_hid
+macsec
 mc
 mhi
 michael_mic
