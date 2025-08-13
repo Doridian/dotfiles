@@ -1,0 +1,8 @@
+- https://auth.foxden.network/ui/update_credentials
+- https://github.com/settings/keys
+- https://git.foxden.network/user/settings/keys
+- ~/dotfiles/user/ssh.authorized_keys
+- router.foxden.network -> Users
+- router-backup.foxden.network -> Users
+- redfox.doridian.net (10.99.10.1) -> Users
+
