@@ -2,7 +2,7 @@
 set -euo pipefail
 set -x
 
-# cp initcpio/post/uki-sbsign /etc/initcpio/post/
+# cp initcpio/post/00-uki-sbsign /etc/initcpio/post/
 # pacman -S sbsigntools
 
 mkdir -p /etc/pki/sbsign
