@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+uki="$3"
+[[ -n "$uki" ]] || exit 0
+
+cp -fv "$3" "${3//\/efi\//\/efi2\/}"
