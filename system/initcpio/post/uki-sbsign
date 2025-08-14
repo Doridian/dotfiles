@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+uki="$3"
+[[ -n "$uki" ]] || exit 0
+
+cert=/etc/pki/sbsign/db.crt
+key=/etc/pki/sbsign/db.key
+
+if ! sbverify --cert "$cert" "$uki" &> /dev/null; then
+        sbsign --key "$key" --cert "$cert" --output "$uki" "$uki"
+        echo "Added signature with $cert"
+else
+        echo "Already signed with $cert"
+fi
