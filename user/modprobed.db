@@ -265,6 +265,7 @@ udp_tunnel
 uinput
 uleds
 usb_storage
+usblp
 uvc
 uvcvideo
 vfat
