@@ -1,5 +1,6 @@
 #%PAM-1.0
 
+#auth       sufficient   pam_parallel.so {"mode":"One", "modules": {"kde-fingerprint": "Fingerprint", "kde": "Password"}}
 auth       sufficient   pam_fprintd.so
 auth       include      system-auth
 account    include      system-auth
