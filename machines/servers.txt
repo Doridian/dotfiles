@@ -1,3 +1,6 @@
 icefox.doridian.net
 bengalfox.foxden.network
 islandfox.foxden.network
+carvera-controller.foxden.network
+carvera-controller.foxden.network
+carvera-controller.foxden.network

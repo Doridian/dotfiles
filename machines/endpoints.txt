@@ -1,2 +1,3 @@
 capefox.foxden.network
 fennec.foxden.network
+carvera-controller.foxden.network
