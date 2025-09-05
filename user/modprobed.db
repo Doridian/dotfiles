@@ -1,8 +1,10 @@
+8021q
 ac97_bus
 acpi_pad
 act_csum
 aesni_intel
 af_alg
+af_key
 algif_hash
 algif_skcipher
 amd_atl
@@ -67,6 +69,7 @@ encrypted_keys
 esp4
 exfat
 fat
+garp
 geniv
 ghash_clmulni_intel
 gpio_amdpt
@@ -130,6 +133,7 @@ mlx4_core
 mlx4_en
 mlx4_ib
 mousedev
+mrp
 netfs
 nf_conntrack
 nf_conntrack_netlink
@@ -141,6 +145,7 @@ nf_reject_ipv6
 nf_tables
 nfnetlink
 nfnetlink_acct
+nfnetlink_log
 nfs
 nfs_localio
 nfsv4
@@ -180,6 +185,7 @@ roles
 rpcrdma
 rpcsec_gss_krb5
 sch_htb
+sch_ingress
 scsi_transport_iscsi
 seqiv
 sg
@@ -269,6 +275,7 @@ usb_storage
 usblp
 uvc
 uvcvideo
+veth
 vfat
 vhost
 vhost_iotlb
@@ -279,6 +286,11 @@ videobuf2_memops
 videobuf2_v4l2
 videobuf2_vmalloc
 videodev
+vmw_vmci
+vmw_vsock_virtio_transport_common
+vmw_vsock_vmci_transport
+vsock
+vsock_loopback
 wireguard
 wmi
 wmi_bmof

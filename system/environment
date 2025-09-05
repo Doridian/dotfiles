@@ -1,0 +1,13 @@
+#
+# This file is parsed by pam_env module
+#
+# Syntax: simple "KEY=VAL" pairs on separate lines
+#
+ELECTRON_OZONE_PLATFORM_HINT=auto
+#SDL_VIDEODRIVER=wayland
+EDITOR=nano
+MOZ_ENABLE_WAYLAND=1
+PROTON_ENABLE_WAYLAND=1
+PROTON_ENABLE_HDR=1
+PROTON_USE_NTSYNC=1
+
