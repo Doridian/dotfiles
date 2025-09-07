@@ -8,17 +8,17 @@ function ptouch-ui
         set -f args ()
 
         if test "$font_size" -gt 0
-            set -f args $args --fontsize "$font_size"
+            set args $args --fontsize "$font_size"
         end
 
         if test "$force_tape_width" -gt 0
-            set -f args $args --force-tape-width="$force_tape_width"
+            set args $args --force-tape-width="$force_tape_width"
         end
 
-        set -f args $args $elements
+        set args $args $elements
 
         if test -n "$writepng"
-            set -f args $args --writepng "$writepng"
+            set args $args --writepng "$writepng"
         end
 
         ptouch-print $args
@@ -88,8 +88,8 @@ function ptouch-ui
     end
 
     function _ptouch_ui_showinfo --no-scope-shadowing
-        set_color blue
-        echo 'Settings: '
+        set_color white
+        echo '== SETTINGS =='
         set_color green
         echo -n '  Font size: '
             set_color yellow
@@ -110,11 +110,11 @@ function ptouch-ui
         end
         set_color normal
 
-        set -f edited_element_valid 0
+        set -l edited_element_valid 0
 
-        set_color blue
-        echo 'Elements: '
-        set_color yellow
+        echo ' '
+        set_color white
+        echo '== LAYOUT =='
         for i in (seq 1 2 (count $elements))
             set -l j (math $i + 1)
             set -l idx (math $j / 2)
@@ -122,7 +122,7 @@ function ptouch-ui
             set -l val $elements[$j]
             if test "$edited_element" -eq "$idx"
                 set_color yellow
-                set -f edited_element_valid 1
+                set edited_element_valid 1
             else
                 set_color green
             end
@@ -169,17 +169,30 @@ function ptouch-ui
             echo 'Add new element'
         end
 
-        set_color blue
-        echo -n 'Preview : '
+        echo ' '
+        set_color white
+        echo '== PREVIEW =='
         if test (count $elements) -eq 0
             set_color yellow
-            echo 'Nothing to preview'
+            echo '  Nothing to preview'
+            echo ' '
             return 0
         end
 
-        echo ''
-        _run_ptouch_print /dev/stdout | imgcat /dev/stdin
-        or set_color red && echo 'Failed to preview'
+        set_color red
+        set -l tmpfile (mktemp /tmp/ptouch-ui-preview-XXXXXX.png)
+        _run_ptouch_print $tmpfile >/dev/null
+        or echo '  Failed to preview' && rm -f $tmpfile && return 1
+        set_color normal
+
+        set_color -b grey
+        echo ' '
+        echo ' '
+        echo -n '  '
+        imgcat "$tmpfile"
+        rm -f "$tmpfile"
+        echo ' '
+        set_color -b normal
     end
 
     function _ptouch_ui_addelement -a typ val --no-scope-shadowing
@@ -211,9 +224,10 @@ function ptouch-ui
     set_color purple
     echo 'Use !help for help'
 
+    set -f input ''
     while read -p '_ptouch_ui_prompt' -L -f input
         if test (string sub --length 1 -- "$input") = '!'
-            set -f input (string sub --start 2 -- "$input")
+            set input (string sub --start 2 -- "$input")
             if test "$input" = info
                 set_color blue
                 ptouch-print --info
@@ -234,9 +248,9 @@ function ptouch-ui
             else if test "$input" = del
                 set -e elements[-2 -1]
             else if test "$input" = 'size auto'
-                set -f font_size 0
+                set font_size 0
             else if test "$input" = 'size automatic'
-                set -f font_size 0
+                set font_size 0
             else if string match -r -- '^del [0-9]+$' "$input" >/dev/null
                 set -l idx (string sub --start 5 -- "$input")
                 set -l j (math $idx '*' 2)
@@ -247,7 +261,7 @@ function ptouch-ui
             else if string match -r -- '^edit [0-9]+$' "$input" >/dev/null
                 set edited_element (string sub --start 6 -- "$input")
             else if string match -r -- '^size [0-9]+$' "$input" >/dev/null
-                set -f font_size (string sub --start 6 -- "$input")
+                set font_size (string sub --start 6 -- "$input")
             else if string match -r -- '^nl ' "$input" >/dev/null
                 _ptouch_ui_addelement '--newline' (string sub --start 4 -- "$input")
             else if string match -r -- '^image ' "$input" >/dev/null
@@ -255,7 +269,7 @@ function ptouch-ui
             else if string match -r -- '^pad [1-9][0-9]*$' "$input" >/dev/null
                 _ptouch_ui_addelement '--pad' (string sub --start 5 -- "$input")
             else if string match -r -- '^ftw [0-9]+$' "$input" >/dev/null
-                set -f force_tape_width (string sub --start 5 -- "$input")
+                set force_tape_width (string sub --start 5 -- "$input")
             else if string match -r -- '^del ' "$input" >/dev/null
                 set_color red
                 echo 'Invalid parameter for !del (must be positive integer or 0):' (string sub --start 5 -- "$input")
