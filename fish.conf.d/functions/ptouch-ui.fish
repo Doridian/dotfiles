@@ -186,13 +186,11 @@ function ptouch-ui
         set_color normal
 
         set_color -b grey
-        echo ' '
-        echo ' '
-        echo -n '  '
+        printf '\n \n  '
         imgcat "$tmpfile"
         rm -f "$tmpfile"
-        echo ' '
-        set_color -b normal
+        set_color normal
+        printf '\n \n'
     end
 
     function _ptouch_ui_addelement -a typ val --no-scope-shadowing
