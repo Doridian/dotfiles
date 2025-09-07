@@ -233,6 +233,10 @@ function ptouch-ui
                 break
             else if test "$input" = del
                 set -e elements[-2 -1]
+            else if test "$input" = 'size auto'
+                set -f font_size 0
+            else if test "$input" = 'size automatic'
+                set -f font_size 0
             else if string match -r -- '^del [0-9]+$' "$input" >/dev/null
                 set -l idx (string sub --start 5 -- "$input")
                 set -l j (math $idx '*' 2)
@@ -252,11 +256,11 @@ function ptouch-ui
                 _ptouch_ui_addelement '--pad' (string sub --start 5 -- "$input")
             else if string match -r -- '^ftw [0-9]+$' "$input" >/dev/null
                 set -f force_tape_width (string sub --start 5 -- "$input")
-            else if string match -r -- '^del( |$)' "$input" >/dev/null
+            else if string match -r -- '^del ' "$input" >/dev/null
                 set_color red
                 echo 'Invalid parameter for !del (must be positive integer or 0):' (string sub --start 5 -- "$input")
                 continue
-            else if string match -r -- '^edit( |$)' "$input" >/dev/null
+            else if string match -r -- '^edit ' "$input" >/dev/null
                 set_color red
                 echo 'Invalid parameter for !edit (must be positive integer or 0):' (string sub --start 6 -- "$input")
                 continue
