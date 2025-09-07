@@ -242,22 +242,39 @@ function ptouch-ui
                 set edited_element (math (count $elements) / 2)
             else if string match -r -- '^edit [0-9]+$' "$input" >/dev/null
                 set edited_element (string sub --start 6 -- "$input")
+            else if string match -r -- '^size [0-9]+$' "$input" >/dev/null
+                set -f font_size (string sub --start 6 -- "$input")
             else if string match -r -- '^nl ' "$input" >/dev/null
                 _ptouch_ui_addelement '--newline' (string sub --start 4 -- "$input")
             else if string match -r -- '^image ' "$input" >/dev/null
                 _ptouch_ui_addelement '--image' (string sub --start 7 -- "$input")
-            else if string match -r -- '^pad [0-9]+$' "$input" >/dev/null
-                _ptouch_ui_addelement '--pad' (string sub --start 5 -- "$input")
-            else if string match -r -- '^pad [0-9]+$' "$input" >/dev/null
+            else if string match -r -- '^pad [1-9][0-9]*$' "$input" >/dev/null
                 _ptouch_ui_addelement '--pad' (string sub --start 5 -- "$input")
             else if string match -r -- '^ftw [0-9]+$' "$input" >/dev/null
                 set -f force_tape_width (string sub --start 5 -- "$input")
-            else if string match -r -- '^size [0-9]+$' "$input" >/dev/null
-                set -f font_size (string sub --start 6 -- "$input")
+            else if string match -r -- '^del( |$)' "$input" >/dev/null
+                set_color red
+                echo 'Invalid parameter for !del (must be positive integer or 0):' (string sub --start 5 -- "$input")
+                continue
+            else if string match -r -- '^edit( |$)' "$input" >/dev/null
+                set_color red
+                echo 'Invalid parameter for !edit (must be positive integer or 0):' (string sub --start 6 -- "$input")
+                continue
+            else if string match -r -- '^pad( |$)' "$input" >/dev/null
+                set_color red
+                echo 'Invalid parameter for !pad (must be positive integer):' (string sub --start 5 -- "$input")
+                continue
+            else if string match -r -- '^ftw( |$)' "$input" >/dev/null
+                set_color red
+                echo 'Invalid parameter for !ftw (must be positive integer or 0):' (string sub --start 5 -- "$input")
+                continue
+            else if string match -r -- '^size( |$)' "$input" >/dev/null
+                set_color red
+                echo 'Invalid parameter for !size (must be positive integer or 0):' (string sub --start 6 -- "$input")
+                continue
             else
                 set_color red
                 echo "Invalid input: $input"
-                _ptouch_ui_help
                 continue
             end
         else if ! test -z "$input"
