@@ -25,7 +25,7 @@ function ptouch-ui
 
     function _ptouch_cmd_info -a cmd info
         set_color blue
-        echo -n "    !$cmd: "
+        echo -n "  !$cmd: "
         set_color yellow
         echo $info
     end
@@ -39,12 +39,12 @@ function ptouch-ui
         echo ' '
 
         echo 'ptouch-ui accepts two kinds of input:'
-        echo -n '    1. '
+        echo -n '  1. '
         set_color red
         echo -n Text
         set_color normal
         echo ' to print'
-        echo -n '    2. '
+        echo -n '  2. '
         set_color red
         echo -n Commands
         set_color normal
@@ -57,31 +57,53 @@ function ptouch-ui
         set_color green
         echo 'Commands:'
         set_color normal
-        _ptouch_cmd_info info 'Print information about the label printer'
-        _ptouch_cmd_info clear 'Clear the current input'
-        _ptouch_cmd_info del 'Delete last added element'
+        _ptouch_cmd_info 'info' 'Print information about the label printer'
+        _ptouch_cmd_info 'clear' 'Clear the current input'
+        _ptouch_cmd_info 'print' 'Print the current input'
+        _ptouch_cmd_info 'help' 'Print this help message'
+        _ptouch_cmd_info 'exit' 'Exit the program'
+        _ptouch_cmd_info 'size PIXELS' 'Set the font size to PIXELS (0 for automatic)'
+        _ptouch_cmd_info 'del' 'Delete last added element'
         _ptouch_cmd_info 'del ELEMENT' 'Delete element at index ELEMENT'
         _ptouch_cmd_info 'nl TEXT' 'Add TEXT on a new line'
         _ptouch_cmd_info 'image FILE' 'Add an image from FILE'
-        _ptouch_cmd_info 'pad PIXELS' 'Add padding of PIXELS pixels'
-        _ptouch_cmd_info print 'Print the current input'
-        _ptouch_cmd_info help 'Print this help message'
-        _ptouch_cmd_info exit 'Exit the program'
-        _ptouch_cmd_info 'ftw PIXELS' 'Set the force tape width to PIXELS pixels'
-        _ptouch_cmd_info '<number>' 'Set the font size to <number> (0 for automatic)'
-
+        _ptouch_cmd_info 'pad PIXELS' 'Add padding of PIXELS'
+        _ptouch_cmd_info 'ftw PIXELS' 'Set the force tape width to PIXELS'
         echo ' '
+    end
+
+    function _ptouch_ui_pluralize -a count singular plural
+        if test "$count" -eq 1
+            echo $singular
+        else
+            echo $plural
+        end
+    end
+
+    function _ptouch_pixel_pluralize -a count
+        _ptouch_ui_pluralize $count 'pixel' 'pixels'
     end
 
     function _ptouch_ui_showinfo --no-scope-shadowing
         set_color blue
-        echo -n "Font size: "
-        if test "$font_size" -gt 0
+        echo 'Settings: '
+        set_color green
+        echo -n '  Font size: '
             set_color yellow
+        if test "$font_size" -gt 0
             echo $font_size
+            set_color white
+            _ptouch_pixel_pluralize "$font_size"
         else
-            set_color green
-            echo 'Automatic (0)'
+            echo 'Automatic'
+        end
+        if test "$force_tape_width" -gt 0
+            set_color red
+            echo -n '  Force tape width: '
+            set_color yellow
+            echo -n "$force_tape_width "
+            set_color white
+            _ptouch_pixel_pluralize "$force_tape_width"
         end
         set_color normal
 
@@ -94,22 +116,33 @@ function ptouch-ui
             set -l typ (string sub --start 3 -- "$elements[$i]")
             set -l val $elements[$j]
             set_color green
-            echo -n "    [$idx] "
+            echo -n "  [$idx] "
+            set -l unit ''
             set_color blue
-            echo -n "$typ: "
+            if test "$typ" = text
+                echo -n 'Text   : '
+            else if test "$typ" = image
+                echo -n 'Image  : '
+            else if test "$typ" = pad
+                echo -n 'Padding: '
+                set unit (_ptouch_pixel_pluralize "$val")
+            else if test "$typ" = newline
+                echo -n 'Newline: '
+            else
+                set_color red
+                echo -n 'Unknown element type: '
+                set_color yellow
+                echo $typ
+                continue
+            end
             set_color yellow
-            echo $val
-        end
-
-        if test "$force_tape_width" -gt 0
-            set_color red
-            echo -n "Force tape width: "
-            set_color yellow
-            echo $force_tape_width
+            echo -n $val
+            set_color white
+            echo " $unit"
         end
 
         set_color blue
-        echo -n 'Preview: '
+        echo -n 'Preview : '
         if test (count $elements) -eq 0
             set_color yellow
             echo 'Nothing to preview'
@@ -158,12 +191,12 @@ function ptouch-ui
                 set -f elements $elements '--image' (string sub --start 7 -- "$input")
             else if string match -r -- '^pad [0-9]+$' "$input" >/dev/null
                 set -f elements $elements '--pad' (string sub --start 5 -- "$input")
-            else if string match -r -- '^[0-9]+$' "$input" >/dev/null
-                set -f font_size $input
             else if string match -r -- '^pad [0-9]+$' "$input" >/dev/null
                 set -f elements $elements '--pad' (string sub --start 5 -- "$input")
             else if string match -r -- '^ftw [0-9]+$' "$input" >/dev/null
                 set -f force_tape_width (string sub --start 5 -- "$input")
+            else if string match -r -- '^size [0-9]+$' "$input" >/dev/null
+                set -f font_size (string sub --start 6 -- "$input")
             else
                 set_color red
                 echo "Invalid input: $input"
