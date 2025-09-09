@@ -138,7 +138,9 @@ end
 
 function _iptables_footer -a generic_reject
     echo '-A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT'
+    echo '-A FORWARD -m conntrack --ctstate INVALID -j LOG'
     echo '-A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT'
+    echo '-A INPUT -m conntrack --ctstate INVALID -j LOG'
     echo '-A INPUT -p tcp -j REJECT --reject-with tcp-reset'
     echo "-A INPUT -p udp -j REJECT --reject-with $generic_reject"
     echo "-A INPUT -j REJECT --reject-with $generic_reject"
