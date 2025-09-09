@@ -9,6 +9,14 @@
 #   SERVICE - Will open port if systemd SYSTEM service is active by name SERVICE
 #   ~SERVICE - Will open port if systemd USER service is inactive by name SERVICE
 function firewall-update
+    if test "$firewall_open_ports" = ""
+        echo '[RULE] Using default rules' >&2
+        set -f open_ports 22000/~syncthing t6666/shutdownd t22/sshd 27000:27100
+    else
+        echo "[RULE] Using custom rules" >&2
+        set -f open_ports $firewall_open_ports
+    end
+
     function _iptables_print_spacing
         echo '=================================================================='
     end
@@ -105,14 +113,6 @@ function firewall-update
         else
             _iptables_port_if_service "$proto" "$port" "$service"
         end
-    end
-
-    if test "$firewall_open_ports" = ""
-        echo '[RULE] Using default rules' >&2
-        set -f open_ports 22000/~syncthing t6666/shutdownd t22/sshd 27000:27100
-    else
-        echo "[RULE] Using custom rules" >&2
-        set -f open_ports $firewall_open_ports
     end
 
     set -f def_route_spl (string split ' ' (ip -o route get 8.8.8.8))
