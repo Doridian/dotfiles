@@ -6,8 +6,8 @@
 #   - A number (e.g. 22)
 #   - A range (e.g. 1000:2000)
 #   - A comma-separated combination of the above (e.g. 22,80,443,1000:2000), up to 16 items
-#   SERVICE - Will open port if systemd SYSTEM service is active by name SERVICE
-#   ~SERVICE - Will open port if systemd USER service is active by name SERVICE
+#   SERVICE - Will open port if systemd SYSTEM service is enabled by name SERVICE
+#   ~SERVICE - Will open port if systemd USER service is enabled by name SERVICE
 function firewall-update
     if test "$firewall_open_ports" = ""
         echo '[RULE] Using default rules' >&2
