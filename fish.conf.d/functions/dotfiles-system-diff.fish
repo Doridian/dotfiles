@@ -1,9 +1,8 @@
 function dotfiles-system-diff
     set -f system_dir (path resolve "$_dotfiles_root_dir/../system")
-    set -f target_dir '/etc'
 
     set -f diff_output (mktemp)
-    find "$system_dir/" -type f -printf '%P\0' | xargs -0 -i{} diff --color=always -u "$target_dir/{}" "$system_dir/{}" >"$diff_output" 2>&1
+    find "$system_dir/" -type f -printf '%P\0' | xargs -0 -i{} diff --color=always -u "/{}" "$system_dir/{}" >"$diff_output" 2>&1
 
     function _dotfiles_system_diff_header -a title
         echo ' '

@@ -1,0 +1,12 @@
+[Unit]
+Description=Run dotfiles-backup
+
+[Service]
+User=root
+Type=simple
+Slice=dotfiles-backup.slice
+Restart=no
+ExecStart=/opt/dotfiles/backup.sh
+
+[Install]
+WantedBy=multi-user.target

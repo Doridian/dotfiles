@@ -1,13 +1,12 @@
 function dotfiles-system-install
     set -f system_dir (path resolve "$_dotfiles_root_dir/../system")
-    set -f target_dir '/etc'
 
     set -f cmd_file (mktemp)
     echo 'set -euo pipefail' > "$cmd_file"
     echo 'set -x' >> "$cmd_file"
 
     for target_file in $argv
-        set -f source_file "$system_dir/"(string replace -r "^$target_dir/" '' "$target_file")
+        set -f source_file "$system_dir/"(string replace -r "^/" '' "$target_file")
 
         if not test -e "$source_file"
             echo "Source file '$source_file' does not exist."
@@ -19,6 +18,8 @@ function dotfiles-system-install
         end
         echo "cp -vaf '$source_file' '$target_file'" >> "$cmd_file"
     end
+
+    echo 'rsync --delete -av ./system/opt/dotfiles/ /opt/dotfiles/' >> "$cmd_file"
 
     cat "$cmd_file"
     sudo bash "$cmd_file"
