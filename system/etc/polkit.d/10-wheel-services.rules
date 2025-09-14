@@ -1,6 +1,7 @@
 const WHEEL_SERVICES = {
 	"fw-fanctrl.service": true,
 	"lactd.service": true,
+	"openlinkhub.service": true,
 };
 
 polkit.addRule(function(action, subject) {
