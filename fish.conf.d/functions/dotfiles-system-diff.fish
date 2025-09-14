@@ -1,6 +1,6 @@
 function dotfiles-system-diff
     set -f system_dir (realpath "$_dotfiles_root_dir/../system")
-    set -f target_dir "/etc"
+    set -f target_dir '/etc'
 
     set -f diff_output (mktemp)
     diff --color=always -ru "$system_dir/" "$target_dir/" 2>&1 | grep --color=never -v '^Only in /etc/' > "$diff_output"
