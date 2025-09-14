@@ -22,7 +22,7 @@ function dotfiles-system-diff
 
     _dotfiles_system_diff_header 'Currently not installed files'
     set_color green
-    cat "$diff_output" | grep --color=never "$_error_regex" | sed "s~^$_error_regex~+\1~"
+    cat "$diff_output" | grep --color=never "$_error_regex" | sed "s~^$_error_regex~+ \1~"
     set_color normal
 
     _dotfiles_system_diff_header 'All done'
