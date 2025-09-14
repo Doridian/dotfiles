@@ -1,6 +1,6 @@
 #!/usr/bin/env fish
 
-cd (dirname (status --current-filename))
+cd (path dirname (status --current-filename))
 
 function _server_update -a server
 	set -l gitremote "server-$server"

@@ -1,5 +1,5 @@
 function dotfiles-system-install
-    set -f system_dir (realpath "$_dotfiles_root_dir/../system")
+    set -f system_dir (path resolve "$_dotfiles_root_dir/../system")
     set -f target_dir '/etc'
 
     set -f cmd_file (mktemp)
@@ -14,8 +14,8 @@ function dotfiles-system-install
             return 1
         end
 
-        if not test -d (dirname "$target_file")
-            echo "mkdir -p '"(dirname "$target_file")"'" >> "$cmd_file"
+        if not test -d (path dirname "$target_file")
+            echo "mkdir -p '"(path dirname "$target_file")"'" >> "$cmd_file"
         end
         echo "cp -vaf '$source_file' '$target_file'" >> "$cmd_file"
     end

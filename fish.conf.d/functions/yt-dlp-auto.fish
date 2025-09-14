@@ -19,7 +19,7 @@ function yt-dlp-auto
         for videoid in $playlist_video_ids
             set -f filename (find "$folder" -name "*\\[$videoid\\]*" -print -quit)
             if test "$folder" = '.'
-                set -f folder (dirname $filename)
+                set -f folder (path dirname $filename)
                 echo '#EXTM3U' > "$folder/$playlist_file"
             end
 

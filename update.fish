@@ -1,6 +1,6 @@
 #!/usr/bin/env fish
 
-cd (dirname (status --current-filename))
+cd (path dirname (status --current-filename))
 
 if test "$argv[1]" != gitpulldone
     git pull
@@ -16,9 +16,9 @@ function _dotfiles_symlink_dir -a src dst
 end
 
 function _dotfiles_symlink_file -a src dst
-    set -l dst_dir (realpath (dirname "$dst"))
+    set -l dst_dir (path resolve (path dirname "$dst"))
 
-    set -l src (realpath "$src")
+    set -l src (path resolve "$src")
     set -l src_rel (realpath -s --relative-to="$dst_dir" "$src")
 
     mkdir -p "$dst_dir"
