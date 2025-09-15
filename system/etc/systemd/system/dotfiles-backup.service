@@ -6,7 +6,7 @@ User=root
 Type=simple
 Slice=dotfiles-backup.slice
 Restart=no
-ExecStart=/opt/dotfiles/backup.sh
+ExecStart=/fox/dotfiles/backup.sh
 
 [Install]
 WantedBy=multi-user.target

@@ -5,12 +5,12 @@ set -x
 cd "$(dirname "$0")"
 
 pacman -S --needed --noconfirm git fish rsync diff
-mkdir -p /opt/dotfiles
+mkdir -p /fox/dotfiles
 
 cp -rvf ./system/etc/system/system/* /etc/system/system/
 
-rsync --delete -av ./system/opt/dotfiles/ /opt/dotfiles/
-cd /opt
+rsync --delete -av ./system/fox/dotfiles/ /fox/dotfiles/
+cd /fox
 if [ -d ./backup ]; then
     cd ./backup
     git pull

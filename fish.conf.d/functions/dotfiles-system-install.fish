@@ -19,7 +19,7 @@ function dotfiles-system-install
         echo "cp -vaf '$source_file' '$target_file'" >> "$cmd_file"
     end
 
-    echo "rsync --delete -av '$system_dir/opt/dotfiles/' /opt/dotfiles/" >> "$cmd_file"
+    echo "rsync --delete -av '$system_dir/fox/dotfiles/' /fox/dotfiles/" >> "$cmd_file"
 
     cat "$cmd_file"
     sudo bash "$cmd_file"
