@@ -1,7 +1,9 @@
 const WHEEL_SERVICES = {
-	"fw-fanctrl.service": true,
-	"lactd.service": true,
-	"openlinkhub.service": true,
+  "fw-fanctrl.service": true,
+  "lactd.service": true,
+  "openlinkhub.service": true,
+  "dotfiles-backup.service": true,
+  "dotfiles-backup.timer": true,
 };
 
 polkit.addRule(function(action, subject) {
