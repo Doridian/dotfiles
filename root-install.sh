@@ -7,7 +7,7 @@ cd "$(dirname "$0")"
 pacman -S --needed --noconfirm git fish rsync diff
 mkdir -p /fox/dotfiles
 
-cp -rvf ./system/etc/system/system/* /etc/system/system/
+cp -rvf ./system/etc/systemd/system/* /etc/systemd/system/
 
 rsync --delete -av ./system/fox/dotfiles/ /fox/dotfiles/
 cd /fox
