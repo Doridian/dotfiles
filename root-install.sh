@@ -5,18 +5,4 @@ set -x
 cd "$(dirname "$0")"
 
 pacman -S --needed --noconfirm git fish rsync diff
-mkdir -p /fox/dotfiles
-
-cp -rvf ./system/etc/systemd/system/* /etc/systemd/system/
-
-rsync --delete -av ./system/fox/dotfiles/ /fox/dotfiles/
-cd /fox
-if [ -d ./backup ]; then
-    cd ./backup
-    git pull
-    cd ..
-else
-    git clone https://github.com/FoxDenHome/backup.git
-fi
-
-systemctl enable --now dotfiles-backup.timer
+mkdir -p /fox
