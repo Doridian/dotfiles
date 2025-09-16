@@ -130,9 +130,6 @@ macsec
 mc
 mhi
 michael_mic
-mlx4_core
-mlx4_en
-mlx4_ib
 mousedev
 mrp
 netfs
