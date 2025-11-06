@@ -34,6 +34,7 @@ _dotfiles_symlink_file user/ssh.authorized_keys ~/.ssh/authorized_keys
 _dotfiles_symlink_file user/modprobed-db.conf ~/.config/modprobed-db.conf
 _dotfiles_symlink_file user/wezterm.lua ~/.wezterm.lua
 _dotfiles_symlink_file user/screenrc ~/.screenrc
+_dotfiles_symlink_file user/terraformrc ~/.terraformrc
 _dotfiles_symlink_dir user/pipewire.conf.d ~/.config/pipewire/pipewire.conf.d
 _dotfiles_symlink_dir user/environment.d ~/.config/environment.d
 

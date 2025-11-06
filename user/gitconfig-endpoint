@@ -2,7 +2,7 @@
 [user]
 	name = Doridian
 	email = git@doridian.net
-	signingkey = /home/doridian/.ssh/id_tpm.pub
+	signingkey = /home/doridian/.ssh/id_ecdsa.pub
 [url "ssh://git@github.com/"]
 	insteadOf = https://github.com/
 [init]
