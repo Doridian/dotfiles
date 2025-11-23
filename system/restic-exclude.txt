@@ -1,0 +1,6 @@
+/home/doridian/.local/share/Steam
+/home/doridian/.local/share/containers
+/home/doridian/Programming/aur
+/var/lib/libvirt/images
+/nix/store
+
