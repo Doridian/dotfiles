@@ -2,7 +2,6 @@
 /home/doridian/.local/share/containers/
 /home/doridian/Programming/aur/
 /home/doridian/.cache/
-/home/doridian/.config/n64/
 /home/doridian/.var/
 /home/doridian/vmware/
 /home/doridian/Downloads/
