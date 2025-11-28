@@ -1,7 +1,7 @@
 function yt-dlp-auto
     function _yt-dlp-one
         echo "Invoking yt-dlp for: $argv"
-        yt-dlp --no-post-overwrites --download-archive ./yt-dlp-archive.txt --merge-output-format mkv --sub-langs all,-live_chat --embed-subs --embed-metadata --cookies-from-browser "$_ytdlp_browser" -o ./'%(uploader)s/%(title)s [%(id)s].%(ext)s' $argv
+        yt-dlp --remote-components ejs:github --js-runtimes node --no-post-overwrites --download-archive ./yt-dlp-archive.txt --merge-output-format mkv --sub-langs all,-live_chat --embed-subs --embed-metadata --cookies-from-browser "$_ytdlp_browser" -o ./'%(uploader)s/%(title)s [%(id)s].%(ext)s' $argv
     end
 
     function _yt-dlp-youtube-m3u8 -a playlist
