@@ -5,6 +5,8 @@
 	signingkey = /home/doridian/.ssh/id_ecdsa.pub
 [url "ssh://git@github.com/"]
 	insteadOf = https://github.com/
+[url "ssh://aur@aur.archlinux.org/"]
+	insteadOf = https://aur.archlinux.org/
 [init]
 	defaultBranch = main
 [sendemail]
