@@ -1,12 +1,11 @@
 function he-sage-score
-    set -f tridd (random 1 65535)
-    set -f tridh (string replace '0x' '' (math -b 16 $tridd))
+    set -f ipv6file (dirname (status -f))/he-ipv6.ssv
+    set -f lineno (random 1 (wc -l $ipv6file | cut -d ' ' -f1))
+    set -f curline (head -n $lineno $ipv6file | tail -n 1)
 
-    set -f trh "$tridd.github.io"
-    set -f tri "2a0a:8d80:0:a000::$tridh"
+    set -f trh (echo $curline | cut -d ' ' -f1)
+    set -f tri (echo $curline | cut -d ' ' -f2)
 
-    echo '=== TRACEROUJTE ==='
-    #traceroute -6 "$tri"
     echo '=== DIG AAAA ==='
     dig AAAA "$trh" @8.8.8.8
     echo '=== DIG PTR ==='
@@ -15,4 +14,6 @@ function he-sage-score
     ping -c4 -6n "$trh"
     echo '=== WHOIS ==='
     whois "$tri"
+    echo '=== TRACEROUTE ==='
+    traceroute -6 "$tri"
 end
