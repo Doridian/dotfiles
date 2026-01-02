@@ -6,10 +6,13 @@ function he-sage-score
     set -f trh (echo $curline | cut -d ' ' -f1)
     set -f tri (echo $curline | cut -d ' ' -f2)
 
+    set -f trptridx (random 1 255)
+    set -f trptr (printf "2001:470:a:%x::1" $trptridx)
+
     echo '=== DIG AAAA ==='
     dig AAAA "$trh" @8.8.8.8
     echo '=== DIG PTR ==='
-    dig PTR -x "$tri" @8.8.8.8
+    dig PTR -x "$trptr" @8.8.8.8
     echo '=== PING ==='
     ping -c4 -6n "$trh"
     echo '=== WHOIS ==='
