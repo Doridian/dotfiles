@@ -12,10 +12,10 @@ function he-sage-score
     dig AAAA "$trh" @8.8.8.8
     echo '=== DIG PTR ==='
     dig PTR -x "$trptr" @8.8.8.8
-    echo '=== PING ==='
-    ping -c4 -6n "$trh"
     echo '=== WHOIS ==='
     whois "$tri"
+    echo '=== PING ==='
+    ping -c4 -6n "$trh"
     echo '=== TRACEROUTE ==='
     traceroute -6 "$tri"
 end
