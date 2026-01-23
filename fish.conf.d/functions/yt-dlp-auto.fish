@@ -39,7 +39,7 @@ function yt-dlp-auto
             continue
         end
 
-        if string match -q -- '*youtube.com/watch?v=*' $line
+        if string match -q -- '*youtube.com/watch?v=*' $line || string match -q -- '*youtu.be/*' $line
             echo "$line" >> $tmpfile
             set -f tmpfile_used 1
             continue
