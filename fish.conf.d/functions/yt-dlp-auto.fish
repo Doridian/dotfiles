@@ -51,7 +51,7 @@ function yt-dlp-auto
             _yt-dlp-youtube-m3u8 $line
         end
 
-        echo 'Done, sleeping for 60 seconds...'
+        echo 'Done!'
         vsleep 60
     end
 
