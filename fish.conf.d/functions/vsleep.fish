@@ -5,4 +5,5 @@ function vsleep -a duration
         sleep 1
         set -f remaining (math $remaining - 1)
     end
+    printf "\rSlept for $duration\n"
 end
