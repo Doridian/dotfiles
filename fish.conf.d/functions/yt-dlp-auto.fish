@@ -52,7 +52,7 @@ function yt-dlp-auto
         end
 
         echo 'Done, sleeping for 60 seconds...'
-        sleep 60s
+        vsleep 60
     end
 
     if test "$tmpfile_used" = 1
